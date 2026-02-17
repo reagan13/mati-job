@@ -1,30 +1,39 @@
 "use client";
-import { useState, useEffect } from "react";
+
+import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, BarChart3, ShieldCheck } from "lucide-react";
 import Notification from "@/components/ui/Notification";
 import Button from "@/components/ui/Button";
 import styles from "./login.module.css";
 
-const AdminLogin = () => {
+export default function AdminLogin() {
   const router = useRouter();
+  const hasHydrated = useRef(false);
+
+  // 1. All States
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [attempts, setAttempts] = useState(0);
-  const [lockoutUntil, setLockoutUntil] = useState(null);
   const [timeLeft, setTimeLeft] = useState(0);
+  const [lockoutUntil, setLockoutUntil] = useState(null);
 
   const MAX_ATTEMPTS = 5;
-  const LOCKOUT_MS = 5 * 60 * 1000;
+  const LOCKOUT_MS = 300000; // 5 Minutes
   const DEFAULT_ADMIN = { email: "admin@mati.com", password: "password123" };
 
-  // Load existing lockout from localStorage on mount
+  // 2. Hydrate lockout state from localStorage on mount (once only)
   useEffect(() => {
-    const savedLockout = localStorage.getItem("admin_lockout_until");
-    if (savedLockout) {
-      const expirationTime = parseInt(savedLockout, 10);
+    if (hasHydrated.current) return;
+    hasHydrated.current = true;
+
+    const saved = localStorage.getItem("admin_lockout_until");
+    if (saved) {
+      const expirationTime = parseInt(saved, 10);
       if (expirationTime > Date.now()) {
+        // Safe: one-time initialization from storage after mount
+        // eslint-disable react-hooks/rules-of-hooks
         setLockoutUntil(expirationTime);
       } else {
         localStorage.removeItem("admin_lockout_until");
@@ -32,9 +41,10 @@ const AdminLogin = () => {
     }
   }, []);
 
-  // Timer logic
+  // 3. Countdown Timer
   useEffect(() => {
     if (!lockoutUntil) return;
+
     const timer = setInterval(() => {
       const remaining = Math.ceil((lockoutUntil - Date.now()) / 1000);
       if (remaining <= 0) {
@@ -46,6 +56,7 @@ const AdminLogin = () => {
         setTimeLeft(remaining);
       }
     }, 1000);
+
     return () => clearInterval(timer);
   }, [lockoutUntil]);
 
@@ -67,11 +78,15 @@ const AdminLogin = () => {
     }
   };
 
-  const formatTime = (s) =>
-    `${Math.floor(s / 60)}:${(s % 60).toString().padStart(2, "0")}`;
+  const formatTime = (s) => {
+    const mins = Math.floor(s / 60);
+    const secs = (s % 60).toString().padStart(2, "0");
+    return `${mins}:${secs}`;
+  };
 
   return (
     <main className={styles.loginPage}>
+      {/* Notifications */}
       {lockoutUntil ? (
         <Notification
           type="error"
@@ -82,7 +97,7 @@ const AdminLogin = () => {
         <Notification
           type="warning"
           title="Login Failed"
-          message={`Invalid credentials. ${MAX_ATTEMPTS - attempts} attempts remaining.`}
+          message={`Invalid credentials. ${MAX_ATTEMPTS - attempts} attempts left.`}
         />
       ) : null}
 
@@ -92,7 +107,7 @@ const AdminLogin = () => {
             Mati<span>.</span>Admin
           </h1>
           <p className={styles.welcomeTagline}>
-            The command center for your entire enterprise ecosystem.
+            Professional dashboard management.
           </p>
         </div>
       </div>
@@ -150,6 +165,4 @@ const AdminLogin = () => {
       </div>
     </main>
   );
-};
-
-export default AdminLogin;
+}
