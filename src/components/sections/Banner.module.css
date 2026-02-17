@@ -1,0 +1,83 @@
+.bannerContainer {
+  position: relative;
+  width: 100%;
+  padding: 2rem 0;
+  background: #ffffff;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.bannerSlider {
+  display: flex;
+  width: 100%;
+}
+
+.bannerTrack {
+  display: flex;
+  gap: 4rem;
+  animation: scroll 100s linear infinite;
+  white-space: nowrap;
+}
+
+.bannerItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.dot {
+  color: #0070f3;
+  font-size: 1.5rem;
+}
+
+.bannerFadeLeft,
+.bannerFadeRight {
+  position: absolute;
+  top: 0;
+  width: 150px;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.bannerFadeLeft {
+  left: 0;
+  background: linear-gradient(to right, white, transparent);
+}
+
+.bannerFadeRight {
+  right: 0;
+  background: linear-gradient(to left, white, transparent);
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.bannerContainer:hover .bannerTrack {
+  animation-play-state: paused;
+}
+
+@media (max-width: 480px) {
+  .bannerContainer {
+    margin-top: -50px;
+  }
+  .bannerItem {
+    font-size: 0.9rem;
+    gap: 0.5rem;
+  }
+  .bannerTrack {
+    gap: 2.5rem;
+  }
+}

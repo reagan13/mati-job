@@ -1,0 +1,53 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.8rem 1.8rem;
+  border-radius: 8px; /* Slightly rounder for a modern look */
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.9rem; /* Slightly larger */
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  border: 1px solid transparent;
+  outline: none;
+}
+
+.btn:active {
+  transform: scale(0.96);
+}
+
+.primary {
+  background: #000;
+  color: #fff;
+  border-color: #000;
+  box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.1);
+}
+
+.primary:hover {
+  background: transparent;
+  color: #000;
+}
+
+.secondary {
+  background: transparent;
+  color: #1a1a1a;
+  padding: 0;
+}
+
+.secondary:hover {
+  opacity: 0.7;
+}
+
+.outline {
+  background: transparent;
+  color: #0070f3;
+  border-color: #0070f3;
+}
+
+.outline:hover {
+  background: #0070f3;
+  color: #fff;
+}
