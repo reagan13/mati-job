@@ -17,7 +17,11 @@ const Notification = ({ type = "error", title, message, onClose }) => {
         <p className={styles.toastMessage}>{message}</p>
       </div>
       {onClose && (
-        <button onClick={onClose} className={styles.closeBtn}>
+        <button
+          onClick={onClose}
+          className={styles.closeBtn}
+          aria-label="Close"
+        >
           <X size={14} />
         </button>
       )}

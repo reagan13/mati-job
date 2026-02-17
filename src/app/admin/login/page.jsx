@@ -16,9 +16,23 @@ const AdminLogin = () => {
   const [timeLeft, setTimeLeft] = useState(0);
 
   const MAX_ATTEMPTS = 5;
-  const LOCKOUT_MS = 5 * 60 * 1000; // 5 Minutes
+  const LOCKOUT_MS = 5 * 60 * 1000;
   const DEFAULT_ADMIN = { email: "admin@mati.com", password: "password123" };
 
+  // Load existing lockout from localStorage on mount
+  useEffect(() => {
+    const savedLockout = localStorage.getItem("admin_lockout_until");
+    if (savedLockout) {
+      const expirationTime = parseInt(savedLockout, 10);
+      if (expirationTime > Date.now()) {
+        setLockoutUntil(expirationTime);
+      } else {
+        localStorage.removeItem("admin_lockout_until");
+      }
+    }
+  }, []);
+
+  // Timer logic
   useEffect(() => {
     if (!lockoutUntil) return;
     const timer = setInterval(() => {
@@ -26,6 +40,7 @@ const AdminLogin = () => {
       if (remaining <= 0) {
         setLockoutUntil(null);
         setAttempts(0);
+        localStorage.removeItem("admin_lockout_until");
         clearInterval(timer);
       } else {
         setTimeLeft(remaining);
@@ -39,12 +54,15 @@ const AdminLogin = () => {
     if (lockoutUntil) return;
 
     if (email === DEFAULT_ADMIN.email && password === DEFAULT_ADMIN.password) {
+      localStorage.removeItem("admin_lockout_until");
       router.push("/dashboard");
     } else {
       const nextCount = attempts + 1;
       setAttempts(nextCount);
       if (nextCount >= MAX_ATTEMPTS) {
-        setLockoutUntil(Date.now() + LOCKOUT_MS);
+        const expiry = Date.now() + LOCKOUT_MS;
+        setLockoutUntil(expiry);
+        localStorage.setItem("admin_lockout_until", expiry.toString());
       }
     }
   };
@@ -54,7 +72,6 @@ const AdminLogin = () => {
 
   return (
     <main className={styles.loginPage}>
-      {/* Toast Notification at bottom-right */}
       {lockoutUntil ? (
         <Notification
           type="error"
@@ -69,7 +86,16 @@ const AdminLogin = () => {
         />
       ) : null}
 
-      <div className={styles.welcomeSide}>{/* Branding content here */}</div>
+      <div className={styles.welcomeSide}>
+        <div className={styles.welcomeContent}>
+          <h1 className={styles.welcomeLogo}>
+            Mati<span>.</span>Admin
+          </h1>
+          <p className={styles.welcomeTagline}>
+            The command center for your entire enterprise ecosystem.
+          </p>
+        </div>
+      </div>
 
       <div className={styles.formSide}>
         <div className={styles.loginCard}>
@@ -126,4 +152,4 @@ const AdminLogin = () => {
   );
 };
 
-export default AdminLogin; // Final default export fix
+export default AdminLogin;
