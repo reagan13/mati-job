@@ -1,0 +1,256 @@
+.loginPage {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background-color: #f8fafc;
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    #e2e8f0 1px,
+    transparent 1px
+  );
+  background-size: 40px 40px;
+}
+
+@media (min-width: 768px) {
+  .loginPage {
+    flex-direction: row;
+  }
+}
+
+.welcomeSide {
+  flex: 1;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.welcomeContent {
+  max-width: 480px;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .welcomeContent {
+    text-align: left;
+  }
+}
+
+.welcomeLogo {
+  font-size: 3rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  margin-bottom: 0.5rem;
+}
+
+.welcomeLogo span {
+  color: #60a5fa;
+}
+
+.welcomeTagline {
+  font-size: 1.25rem;
+  opacity: 0.9;
+  margin-bottom: 2.5rem;
+}
+
+.welcomeDescription h2 {
+  font-size: 1.75rem;
+  margin-bottom: 1rem;
+}
+.welcomeDescription p {
+  font-size: 1.1rem;
+  opacity: 0.85;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.featuresList {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+.featuresList li::before {
+  content: "✓ ";
+  color: #60a5fa;
+  font-weight: bold;
+}
+
+.welcomeFooter {
+  margin-top: 3rem;
+  font-size: 0.875rem;
+  opacity: 0.7;
+}
+
+.formSide {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: white;
+}
+
+.loginCard {
+  width: 100%;
+  max-width: 420px;
+  padding: 2.5rem 2rem;
+  border-radius: 20px;
+  border: 1px solid #e2e8f0;
+  box-shadow:
+    0 10px 25px -5px rgba(0, 0, 0, 0.05),
+    0 8px 10px -6px rgba(0, 0, 0, 0.02);
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+.logo {
+  font-size: 2.125rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+.logo span {
+  color: #3b82f6;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.floatingGroup {
+  position: relative;
+  width: 100%;
+  height: 54px;
+}
+
+.floatingInput {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0 1.125rem;
+  font-size: 1rem;
+  border-radius: 12px;
+  border: 1.5px solid #cbd5e1;
+  background-color: transparent;
+  transition: all 0.2s ease;
+  color: #1e293b;
+  box-sizing: border-box;
+}
+
+.floatingLabel {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 0 0.4rem;
+  color: #94a3b8;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  pointer-events: none;
+  background-color: white;
+  z-index: 1;
+}
+
+.floatingInput:focus + .floatingLabel,
+.floatingInput:not(:placeholder-shown) + .floatingLabel {
+  top: 0;
+  transform: translateY(-50%) scale(0.85);
+  left: 0.8rem;
+  font-weight: 700;
+  color: #3b82f6;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.floatingInput:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+.passwordWrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.passwordInput {
+  padding-right: 3.5rem !important;
+}
+
+.eyeButton {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  border-radius: 8px;
+  z-index: 10;
+}
+
+.eyeButton:hover {
+  color: #3b82f6;
+  background-color: #f1f5f9;
+}
+.formActions button {
+  width: 100%;
+  margin-top: 1rem;
+}
+.footerNote {
+  margin-top: 2rem;
+  text-align: center;
+  font-size: 0.8125rem;
+  color: #64748b;
+}
+
+.errorMessage {
+  background-color: #fef2f2;
+  color: #b91c1c;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1px solid #fee2e2;
+  text-align: center;
+  animation: shake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes shake {
+  10%,
+  90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+  20%,
+  80% {
+    transform: translate3d(2px, 0, 0);
+  }
+  30%,
+  50%,
+  70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+  40%,
+  60% {
+    transform: translate3d(4px, 0, 0);
+  }
+}
