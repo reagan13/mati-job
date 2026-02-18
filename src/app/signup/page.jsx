@@ -2,37 +2,55 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { Eye, EyeOff, Check, X } from "lucide-react";
+import { Eye, EyeOff, Check, X, Briefcase, User } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import Button from "@/components/ui/Button";
 import styles from "./Signup.module.css";
+import { signUpUser } from "../actions/auth";
 
 export default function SignUp() {
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
     password: "",
+    confirmPassword: "",
+    role: "applicant",
   });
 
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPass, setShowPass] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState({ type: "", text: "" });
 
   const validations = {
     length: formData.password.length >= 8,
     number: /[0-9]/.test(formData.password),
     special: /[!@#$%^&*]/.test(formData.password),
+    match:
+      formData.password === formData.confirmPassword &&
+      formData.confirmPassword !== "",
   };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const setRole = (role) => setFormData({ ...formData, role });
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (Object.values(validations).every(Boolean)) {
-      console.log("Account created:", formData.email);
-    }
+    if (!Object.values(validations).every(Boolean)) return;
+
+    setLoading(true);
+    const data = new FormData(e.target);
+    data.append("role", formData.role); // Manually append the state role
+
+    const result = await signUpUser(data);
+    if (result.error) setMessage({ type: "error", text: result.error });
+    else setMessage({ type: "success", text: result.success });
+    setLoading(false);
   };
 
   return (
@@ -48,51 +66,80 @@ export default function SignUp() {
           </div>
 
           <form className={styles.form} onSubmit={handleSubmit}>
+            {/* Role Selection */}
+            <div className={styles.roleContainer}>
+              <div
+                className={`${styles.roleCard} ${formData.role === "applicant" ? styles.activeRole : ""}`}
+                onClick={() => setRole("applicant")}
+              >
+                <User size={20} />
+                <span>Applicant</span>
+              </div>
+              <div
+                className={`${styles.roleCard} ${formData.role === "client" ? styles.activeRole : ""}`}
+                onClick={() => setRole("client")}
+              >
+                <Briefcase size={20} />
+                <span>Client</span>
+              </div>
+            </div>
+
+            {message.text && (
+              <p
+                className={
+                  message.type === "error"
+                    ? styles.invalidText
+                    : styles.validText
+                }
+              >
+                {message.text}
+              </p>
+            )}
+
             <div className={styles.inputGroup}>
-              <label htmlFor="fullName">Full Name</label>
               <input
                 type="text"
-                id="fullName"
                 name="fullName"
-                placeholder="John Doe"
+                placeholder=" "
+                className={styles.inputField}
                 onChange={handleChange}
                 required
               />
+              <label className={styles.floatingLabel}>Full Name</label>
             </div>
 
             <div className={styles.inputGroup}>
-              <label htmlFor="email">Email Address</label>
               <input
                 type="email"
-                id="email"
                 name="email"
-                placeholder="name@company.com"
+                placeholder=" "
+                className={styles.inputField}
                 onChange={handleChange}
                 required
               />
+              <label className={styles.floatingLabel}>Email Address</label>
             </div>
 
             <div className={styles.inputGroup}>
-              <label htmlFor="password">Password</label>
               <div className={styles.passwordWrapper}>
                 <input
-                  type={showPassword ? "text" : "password"}
-                  id="password"
+                  type={showPass ? "text" : "password"}
                   name="password"
-                  placeholder="••••••••"
+                  placeholder=" "
+                  className={styles.inputField}
                   onChange={handleChange}
                   onFocus={() => setIsFocused(true)}
                   onBlur={() => setIsFocused(false)}
                   required
                 />
+                <label className={styles.floatingLabel}>Password</label>
                 <button
                   type="button"
                   className={styles.eyeBtn}
-                  onClick={() => setShowPassword(!showPassword)}
+                  onClick={() => setShowPass(!showPass)}
                 >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  {showPass ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
-
                 {isFocused && (
                   <div className={styles.validationModal}>
                     <p
@@ -136,12 +183,45 @@ export default function SignUp() {
               </div>
             </div>
 
+            <div className={styles.inputGroup}>
+              <div className={styles.passwordWrapper}>
+                <input
+                  type={showConfirm ? "text" : "password"}
+                  name="confirmPassword"
+                  placeholder=" "
+                  className={styles.inputField}
+                  onChange={handleChange}
+                  required
+                />
+                <label className={styles.floatingLabel}>Confirm Password</label>
+                <button
+                  type="button"
+                  className={styles.eyeBtn}
+                  onClick={() => setShowConfirm(!showConfirm)}
+                >
+                  {showConfirm ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
+              {formData.confirmPassword && (
+                <p
+                  className={
+                    validations.match ? styles.validText : styles.invalidText
+                  }
+                >
+                  {validations.match
+                    ? "✓ Passwords match"
+                    : "✕ Passwords do not match"}
+                </p>
+              )}
+            </div>
+
             <Button
               variant="primary"
               type="submit"
               className={styles.submitBtn}
+              disabled={loading}
             >
-              CREATE ACCOUNT
+              {loading ? "PROCESSING..." : "CREATE ACCOUNT"}
             </Button>
           </form>
 
