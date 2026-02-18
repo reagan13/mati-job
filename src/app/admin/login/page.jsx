@@ -6,6 +6,7 @@ import { Eye, EyeOff, BarChart3, ShieldCheck } from "lucide-react";
 import Notification from "@/components/ui/Notification";
 import Button from "@/components/ui/Button";
 import styles from "./login.module.css";
+import AdminDashboard from "../dashboard/page";
 
 export default function AdminLogin() {
   const router = useRouter();
@@ -66,7 +67,7 @@ export default function AdminLogin() {
 
     if (email === DEFAULT_ADMIN.email && password === DEFAULT_ADMIN.password) {
       localStorage.removeItem("admin_lockout_until");
-      router.push("/dashboard");
+      router.push("/admin/dashboard");
     } else {
       const nextCount = attempts + 1;
       setAttempts(nextCount);
