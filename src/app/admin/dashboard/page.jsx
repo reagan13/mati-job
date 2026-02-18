@@ -14,6 +14,7 @@ import {
   Search,
   Bell,
   SlidersHorizontal,
+  MonitorOff, // New icon for the blocker
 } from "lucide-react";
 import styles from "./Dashboard.module.css";
 
@@ -50,6 +51,16 @@ export default function AdminDashboard() {
 
   return (
     <div className={styles.dashboardLayout}>
+      {/* Mobile Blocker Overlay */}
+      <div className={styles.mobileBlocker}>
+        <MonitorOff size={64} className={styles.blockerIcon} />
+        <h2>Access Restricted</h2>
+        <p>
+          The Admin Dashboard requires a larger screen for data integrity and
+          system management. Please switch to a desktop or laptop device.
+        </p>
+      </div>
+
       <AdminSidebar />
 
       <main className={styles.mainContent}>

@@ -158,12 +158,60 @@
   }
 }
 
-/* Responsive */
+/* --- Mobile Blocker --- */
+.mobileBlocker {
+  display: none; /* Hidden on desktop */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #0f172a;
+  color: white;
+  z-index: 9999;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+  margin-left: -35px;
+}
+
+.blockerIcon {
+  margin-bottom: 1.5rem;
+  color: #3b82f6;
+}
+
+.mobileBlocker h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.mobileBlocker p {
+  color: #94a3b8;
+  line-height: 1.6;
+  max-width: 320px;
+}
+
 @media (max-width: 1200px) {
   .statsGrid {
     grid-template-columns: repeat(2, 1fr);
   }
   .managementGrid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 1024px) {
+  .mobileBlocker {
+    display: flex;
+  }
+  .mainContent,
+  .topBar {
+    display: none;
+  }
+  .dashboardLayout {
+    overflow: hidden;
+    height: 100vh;
   }
 }
