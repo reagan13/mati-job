@@ -1,0 +1,149 @@
+.chartContainer {
+  background: white;
+  padding: 1.75rem;
+  border-radius: 24px;
+  border: 1px solid #f1f5f9;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  margin-bottom: 2rem;
+}
+
+.chartHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.titleArea {
+  display: flex;
+  flex-direction: column;
+}
+
+.titleHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 0.5rem;
+}
+
+.chartTitle {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+}
+
+.rangeBadge {
+  background: #eff6ff;
+  color: #3b82f6;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  border: 1px solid #dbeafe;
+}
+
+.controlsRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.toggleGroup {
+  display: flex;
+  background: #f1f5f9;
+  padding: 4px;
+  border-radius: 10px;
+}
+
+.typeBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border: none;
+  background: transparent;
+  color: #64748b;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: 7px;
+  transition: all 0.2s;
+}
+
+.typeActive {
+  background: white;
+  color: #3b82f6;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.filterLegend {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.filterBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 0.85rem;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  font-weight: 600;
+  font-size: 0.75rem;
+  color: #475569;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.filterBtn:hover {
+  background: white;
+  border-color: #cbd5e1;
+}
+
+.inactive {
+  opacity: 0.4;
+  filter: grayscale(1);
+  text-decoration: line-through;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.interpretationBox {
+  margin-top: 1.5rem;
+  padding: 1.25rem;
+  background: #fffbeb;
+  border-left: 4px solid #f59e0b;
+  border-radius: 12px;
+}
+
+.interpretationTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #92400e;
+  margin: 0 0 0.4rem 0;
+}
+
+.interpretationText {
+  font-size: 0.85rem;
+  color: #78350f;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.graphWrapper {
+  width: 100%;
+}

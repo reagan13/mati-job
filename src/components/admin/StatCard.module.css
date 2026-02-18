@@ -1,0 +1,87 @@
+/* Container for the individual stat card */
+.statCard {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  border: 1px solid #f1f5f9;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.05),
+    0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: default;
+}
+
+/* Pro-level hover effect */
+.statCard:hover {
+  transform: translateY(-5px);
+  box-shadow:
+    0 20px 25px -5px rgba(0, 0, 0, 0.05),
+    0 10px 10px -5px rgba(0, 0, 0, 0.02);
+  border-color: #e2e8f0;
+}
+
+/* Icon Container with flexible background colors */
+.iconWrapper {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.statCard:hover .iconWrapper {
+  transform: rotate(-5deg) scale(1.1);
+}
+
+/* Color variations for different stat types */
+.blue {
+  background-color: #eff6ff;
+  color: #3b82f6;
+}
+.red {
+  background-color: #fef2f2;
+  color: #ef4444;
+}
+.yellow {
+  background-color: #fffbeb;
+  color: #f59e0b;
+}
+.green {
+  background-color: #f0fdf4;
+  color: #22c55e;
+}
+
+/* Text Information Layout */
+.statInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.statTitle {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #64748b; /* Slate-500 */
+  margin: 0;
+}
+
+.statValue {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #0f172a; /* Slate-900 */
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.statTrend {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #94a3b8; /* Slate-400 */
+  margin-top: 4px;
+}

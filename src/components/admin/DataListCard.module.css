@@ -1,0 +1,52 @@
+/* Container for the Card */
+.dataCard {
+  background: white;
+  padding: 1.75rem;
+  border-radius: 24px; /* Pro-level rounded corners */
+  border: 1px solid #f1f5f9;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header layout to ensure Button is visible on the right */
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  width: 100%;
+}
+
+.cardHeader h3 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+/* Specific styling for the Button container in the header */
+.headerAction {
+  display: flex;
+  align-items: center;
+}
+
+/* Table Item Enhancements */
+.tableItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: #f8fafc;
+  border-radius: 14px;
+  margin-bottom: 0.75rem;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.tableItem:hover {
+  background: white;
+  border-color: #e2e8f0;
+  transform: translateX(4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
