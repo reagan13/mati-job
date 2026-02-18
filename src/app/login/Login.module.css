@@ -1,0 +1,128 @@
+.main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+  padding: 0 4rem;
+  background-color: #ffffff;
+  background-image: radial-gradient(#e5e7eb 0.8px, transparent 0.8px);
+  background-size: 30px 30px;
+}
+
+.card {
+  background: #ffffff;
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  max-width: 450px;
+  box-sizing: border-box;
+  z-index: 1;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.header h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.logoDot {
+  color: #0070f3;
+}
+
+.inputGroup {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.inputField {
+  width: 100%;
+  padding: 1.25rem 1rem 0.6rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  box-sizing: border-box;
+  background: transparent;
+}
+
+.floatingLabel {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9ca3af;
+  pointer-events: none;
+  transition: 0.2s ease all;
+  background: white;
+  padding: 0 4px;
+}
+
+.inputField:focus ~ .floatingLabel,
+.inputField:not(:placeholder-shown) ~ .floatingLabel {
+  top: 0;
+  font-size: 0.75rem;
+  color: #000;
+  transform: translateY(-50%);
+}
+
+.passwordWrapper {
+  position: relative;
+}
+
+.eyeBtn {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #9ca3af;
+  cursor: pointer;
+}
+
+.forgotPassword {
+  text-align: right;
+  margin-top: -0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.forgotPassword a {
+  font-size: 0.85rem;
+  color: #0070f3;
+  text-decoration: none;
+}
+
+.submitBtn {
+  width: 100% !important;
+  background-color: #000 !important;
+  color: white;
+  font-weight: 700;
+  height: 50px;
+  border-radius: 8px;
+  text-transform: uppercase;
+}
+
+.validText {
+  color: #10b981;
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+.invalidText {
+  color: #ef4444;
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.footer {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #666;
+}

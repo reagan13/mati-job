@@ -1,0 +1,116 @@
+"use client";
+
+import React, { useState } from "react";
+import Link from "next/link";
+import { Eye, EyeOff } from "lucide-react";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
+import Button from "@/components/ui/Button";
+import styles from "./Login.module.css";
+import { signInUser } from "../actions/auth";
+import { useRouter } from "next/navigation";
+
+export default function Login() {
+  const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState({ type: "", text: "" });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setMessage({ type: "", text: "" });
+
+    const data = new FormData(e.target);
+    const result = await signInUser(data);
+
+    if (result.error) {
+      setMessage({ type: "error", text: result.error });
+      setLoading(false);
+    } else {
+      setMessage({ type: "success", text: result.success });
+      setTimeout(() => router.push("/dashboard"), 1500);
+    }
+  };
+
+  return (
+    <>
+      <Navbar />
+      <main className={styles.main}>
+        <div className={styles.card}>
+          <div className={styles.header}>
+            <h1>
+              Welcome Back to MATI<span className={styles.logoDot}>JOB</span>
+            </h1>
+            <p>Enter your credentials to access your account.</p>
+          </div>
+
+          <form className={styles.form} onSubmit={handleSubmit}>
+            {message.text && (
+              <p
+                className={
+                  message.type === "error"
+                    ? styles.invalidText
+                    : styles.validText
+                }
+              >
+                {message.text}
+              </p>
+            )}
+
+            <div className={styles.inputGroup}>
+              <input
+                type="email"
+                name="email"
+                placeholder=" "
+                className={styles.inputField}
+                required
+              />
+              <label className={styles.floatingLabel}>Email Address</label>
+            </div>
+
+            <div className={styles.inputGroup}>
+              <div className={styles.passwordWrapper}>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  placeholder=" "
+                  className={styles.inputField}
+                  required
+                />
+                <label className={styles.floatingLabel}>Password</label>
+                <button
+                  type="button"
+                  className={styles.eyeBtn}
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
+            </div>
+
+            <div className={styles.forgotPassword}>
+              <Link href="/forgot-password">Forgot password?</Link>
+            </div>
+
+            <Button
+              variant="primary"
+              type="submit"
+              className={styles.submitBtn}
+              disabled={loading}
+            >
+              {loading ? "SIGNING IN..." : "SIGN IN"}
+            </Button>
+          </form>
+
+          <div className={styles.footer}>
+            <p>
+              Don&apos;t have an account? <Link href="/signup">Sign Up</Link>
+            </p>
+          </div>
+        </div>
+      </main>
+      <Footer />
+    </>
+  );
+}

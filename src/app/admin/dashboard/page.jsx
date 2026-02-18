@@ -14,7 +14,7 @@ import {
   Search,
   Bell,
   SlidersHorizontal,
-  MonitorOff, 
+  MonitorOff,
 } from "lucide-react";
 import styles from "./Dashboard.module.css";
 

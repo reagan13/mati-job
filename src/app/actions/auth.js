@@ -21,3 +21,16 @@ export async function signUpUser(formData) {
   if (error) return { error: error.message };
   return { success: "Account created! Please verify your email." };
 }
+
+export async function signInUser(formData) {
+  const email = formData.get("email");
+  const password = formData.get("password");
+
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
+
+  if (error) return { error: error.message };
+  return { success: "Login successful! Redirecting..." };
+}
