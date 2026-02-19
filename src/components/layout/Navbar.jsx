@@ -39,7 +39,7 @@ const Navbar = () => {
           </Link>
 
           <div className={styles.mobileCta}>
-            <Button href="/signup" variant="secondary" onClick={closeMenu}>
+            <Button href="/login" variant="secondary" onClick={closeMenu}>
               Sign In
             </Button>
             <Button href="/post-job" variant="primary" onClick={closeMenu}>
@@ -50,7 +50,7 @@ const Navbar = () => {
 
         <div className={styles.ctaWrapper}>
           <div className={styles.desktopCta}>
-            <Button href="/signup" variant="secondary">
+            <Button href="/login" variant="secondary">
               Sign In
             </Button>
             <Button href="/post-job" variant="primary">

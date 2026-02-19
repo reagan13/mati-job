@@ -4,15 +4,25 @@ import { redirect } from "next/navigation";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 
-export default async function Dashboard() {
-  const cookieStore = cookies();
+export default async function Home() {
+  const cookieStore = await cookies();
+
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     {
       cookies: {
-        get(name) {
-          return cookieStore.get(name)?.value;
+        getAll() {
+          return cookieStore.getAll();
+        },
+        setAll(cookiesToSet) {
+          try {
+            cookiesToSet.forEach(({ name, value, options }) =>
+              cookieStore.set(name, value, options),
+            );
+          } catch {
+            // The middleware handles cookie refreshing; safe to ignore in Server Components
+          }
         },
       },
     },
@@ -21,9 +31,12 @@ export default async function Dashboard() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
 
-  // Fetch the custom profile data
+  // Redundancy check in case middleware is bypassed
+  if (!user) {
+    redirect("/login");
+  }
+
   const { data: profile } = await supabase
     .from("profiles")
     .select("*")
@@ -47,6 +60,7 @@ export default async function Dashboard() {
           <p>
             Logged in as: <strong>{user.email}</strong>
           </p>
+
           <div
             style={{
               marginTop: "2rem",

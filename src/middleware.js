@@ -32,29 +32,29 @@ export async function middleware(request) {
     },
   );
 
-  // Use getSession to refresh the token on every request
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
-  const user = session?.user;
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  // Protected routes check
-  if (!user && request.nextUrl.pathname.startsWith("/dashboard")) {
+  const url = request.nextUrl.clone();
+
+  // 1. Protected Route Logic: If no user, redirect to login
+  if (!user && url.pathname.startsWith("/home")) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  // Prevent logged-in users from seeing Auth pages
-  if (
-    user &&
-    (request.nextUrl.pathname.startsWith("/login") ||
-      request.nextUrl.pathname.startsWith("/signup"))
-  ) {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
+  // 2. Auth Route Logic: If user exists, don't let them see login/signup
+  if (user && (url.pathname === "/login" || url.pathname === "/signup")) {
+    return NextResponse.redirect(new URL("/home", request.url));
   }
 
   return response;
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/login", "/signup"],
+  // Broad matcher ensures middleware runs on almost every request
+  // to keep the session alive and handle redirects instantly.
+  matcher: [
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+  ],
 };

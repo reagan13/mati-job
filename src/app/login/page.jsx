@@ -29,7 +29,17 @@ export default function Login() {
       setLoading(false);
     } else {
       setMessage({ type: "success", text: result.success });
-      setTimeout(() => router.push("/dashboard"), 1500);
+
+      // Force Next.js to re-evaluate the server-side auth state
+      router.refresh();
+
+      setTimeout(() => {
+        // Option A: Standard Next.js navigation
+        router.push("/home");
+
+        // Option B: If A fails, use this for a "hard" redirect:
+        // window.location.href = "/home";
+      }, 1500);
     }
   };
 

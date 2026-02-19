@@ -81,7 +81,7 @@ const Hero = () => {
             speed, security, and the future of work.
           </p>
           <div className={styles.actions}>
-            <Button href="/find-jobs">Start Raketing</Button>
+            <Button href="/login">Start Raketing</Button>
             <Button href="/how-it-works" variant="outline">
               Learn More
             </Button>
