@@ -3,12 +3,20 @@ import { useState, useRef, useEffect } from "react";
 import { ChevronDown } from "lucide-react";
 import styles from "./CustomSelect.module.css";
 
-const CustomSelect = ({ icon: Icon, options, placeholder, onChange }) => {
+// ADD 'value' to props
+const CustomSelect = ({
+  icon: Icon,
+  options,
+  placeholder,
+  onChange,
+  value,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selected, setSelected] = useState(null);
   const containerRef = useRef(null);
 
-  // Close dropdown when clicking outside
+  // Find the label for the current value to display in the header
+  const selectedOption = options.find((opt) => opt.value === value);
+
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (containerRef.current && !containerRef.current.contains(e.target)) {
@@ -20,9 +28,8 @@ const CustomSelect = ({ icon: Icon, options, placeholder, onChange }) => {
   }, []);
 
   const handleSelect = (option) => {
-    setSelected(option);
     setIsOpen(false);
-    onChange?.(option.value);
+    onChange?.(option.value); // Send value to parent
   };
 
   return (
@@ -33,8 +40,9 @@ const CustomSelect = ({ icon: Icon, options, placeholder, onChange }) => {
       >
         <div className={styles.leftContent}>
           {Icon && <Icon size={20} className={styles.icon} />}
-          <span className={selected ? styles.value : styles.placeholder}>
-            {selected ? selected.label : placeholder}
+          {/* Use selectedOption.label if it exists, otherwise show placeholder */}
+          <span className={selectedOption ? styles.value : styles.placeholder}>
+            {selectedOption ? selectedOption.label : placeholder}
           </span>
         </div>
         <ChevronDown
@@ -48,7 +56,7 @@ const CustomSelect = ({ icon: Icon, options, placeholder, onChange }) => {
           {options.map((opt) => (
             <div
               key={opt.value}
-              className={styles.optionItem}
+              className={`${styles.optionItem} ${value === opt.value ? styles.selectedOption : ""}`}
               onClick={() => handleSelect(opt)}
             >
               {opt.label}

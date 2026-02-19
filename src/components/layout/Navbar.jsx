@@ -38,7 +38,7 @@ const Navbar = ({ user: initialUser, profile }) => {
   return (
     <header className={`${styles.header} ${isScrolled ? styles.scrolled : ""}`}>
       <div className={styles.container}>
-        <Link href="/" className={styles.logo} onClick={closeMenu}>
+        <Link href="/home" className={styles.logo} onClick={closeMenu}>
           MATI<span className={styles.logoDot}>JOB</span>
         </Link>
 

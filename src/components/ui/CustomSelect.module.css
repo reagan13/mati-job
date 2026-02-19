@@ -7,13 +7,13 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 12px;
+  padding: 12px 16px; /* Matches .textInput exactly */
+  height: 48px; /* Standardized height for all inputs */
   cursor: pointer;
   background: transparent;
   transition: all 0.2s ease;
   border-radius: 8px;
 }
-
 .selectHeader:hover {
   background: #f8fafc;
 }
