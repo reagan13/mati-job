@@ -98,6 +98,79 @@
 .mobileCta {
   display: none;
 }
+.proAvatarWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0.75rem;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.avatarInner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #f8fafc; /* Very light slate */
+  border: 1.5px solid #e2e8f0; /* Subtle border */
+  color: #64748b; /* Professional slate gray */
+  transition: all 0.2s ease;
+}
+
+.proAvatarWrapper:hover .avatarInner {
+  background: #ffffff;
+  border-color: #0070f3; /* MATIJOB Blue on hover */
+  color: #0070f3;
+  box-shadow: 0 0 0 4px rgba(0, 112, 243, 0.1); /* Subtle "ring" focus effect */
+}
+
+.userIconMobile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  background: #f1f5f9;
+  border-radius: 12px;
+  color: #1e293b;
+  text-decoration: none;
+  font-weight: 600;
+  margin-top: 0.5rem;
+}
+
+.desktopCta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.profileDropdownContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: calc(100% + 15px);
+  right: 0;
+  width: 220px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  padding: 0.5rem;
+  z-index: 1001;
+}
+
+.proAvatarWrapper {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
 
 @media (max-width: 768px) {
   .menuToggle {
