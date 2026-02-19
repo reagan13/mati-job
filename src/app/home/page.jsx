@@ -3,6 +3,8 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import Button from "@/components/ui/Button"; // Import your UI Button
+import { signOutUser } from "../actions/auth"; // Import the action
 
 export default async function Home() {
   const cookieStore = await cookies();
@@ -13,13 +15,6 @@ export default async function Home() {
       cookies: {
         getAll() {
           return cookieStore.getAll();
-        },
-        setAll(cookiesToSet) {
-          try {
-            cookiesToSet.forEach(({ name, value, options }) =>
-              cookieStore.set(name, value, options),
-            );
-          } catch {}
         },
       },
     },
@@ -44,6 +39,10 @@ export default async function Home() {
           padding: "4rem 2rem",
           minHeight: "80vh",
           background: "#fdfdfd",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
         }}
       >
         <div
@@ -53,12 +52,14 @@ export default async function Home() {
           <p>
             Logged in as: <strong>{user.email}</strong>
           </p>
+
           <div
             style={{
               marginTop: "2rem",
               padding: "2rem",
               border: "1px solid #ddd",
               borderRadius: "8px",
+              backgroundColor: "white",
             }}
           >
             <h3>User Profile</h3>
@@ -69,6 +70,14 @@ export default async function Home() {
                 {profile?.role || "Not Set"}
               </span>
             </p>
+
+            <div style={{ marginTop: "2rem" }}>
+              <form action={signOutUser}>
+                <Button variant="danger" type="submit">
+                  SIGN OUT
+                </Button>
+              </form>
+            </div>
           </div>
         </div>
       </main>

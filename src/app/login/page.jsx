@@ -30,15 +30,10 @@ export default function Login() {
     } else {
       setMessage({ type: "success", text: result.success });
 
-      // Force Next.js to re-evaluate the server-side auth state
       router.refresh();
 
       setTimeout(() => {
-        // Option A: Standard Next.js navigation
         router.push("/home");
-
-        // Option B: If A fails, use this for a "hard" redirect:
-        // window.location.href = "/home";
       }, 1500);
     }
   };

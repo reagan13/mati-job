@@ -15,7 +15,9 @@ export async function middleware(request) {
           return request.cookies.get(name)?.value;
         },
         set(name, value, options) {
+          // Update request cookies for the current execution
           request.cookies.set({ name, value, ...options });
+          // Create a new response to set cookies in the browser
           response = NextResponse.next({
             request: { headers: request.headers },
           });
@@ -32,19 +34,22 @@ export async function middleware(request) {
     },
   );
 
+  // This refreshes the session if it exists
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const url = request.nextUrl.clone();
-
-  // 1. Protected Route Logic: If no user, redirect to login
-  if (!user && url.pathname.startsWith("/home")) {
+  // Protect routes starting with /home
+  if (!user && request.nextUrl.pathname.startsWith("/home")) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  // 2. Auth Route Logic: If user exists, don't let them see login/signup
-  if (user && (url.pathname === "/login" || url.pathname === "/signup")) {
+  // Prevent logged-in users from accessing login/signup
+  if (
+    user &&
+    (request.nextUrl.pathname === "/login" ||
+      request.nextUrl.pathname === "/signup")
+  ) {
     return NextResponse.redirect(new URL("/home", request.url));
   }
 
@@ -52,9 +57,13 @@ export async function middleware(request) {
 }
 
 export const config = {
-  // Broad matcher ensures middleware runs on almost every request
-  // to keep the session alive and handle redirects instantly.
   matcher: [
+    /*
+     * Match all request paths except for the ones starting with:
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     */
     "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
   ],
 };
