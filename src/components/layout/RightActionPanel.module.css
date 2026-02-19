@@ -1,0 +1,111 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 350px;
+}
+
+.card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 20px;
+  border: 1px solid #e2e8f0;
+}
+
+.cardTitle {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 1.25rem;
+}
+
+.icon {
+  margin-right: 8px;
+  color: #3b82f6;
+}
+
+.userList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.userItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatarPlaceholder {
+  width: 40px;
+  height: 40px;
+  background: #f1f5f9;
+  border-radius: 50%;
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.userName {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.userRole {
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.tagCloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag {
+  background: #f1f5f9;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  color: #475569;
+  transition: all 0.2s;
+}
+
+.tag:hover {
+  background: #e2e8f0;
+  cursor: pointer;
+}
+
+.promoCard {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  padding: 1.5rem;
+  border-radius: 20px;
+  color: white;
+  text-align: center;
+}
+
+.promoIcon {
+  margin-bottom: 12px;
+}
+
+.promoCard p {
+  font-size: 0.85rem;
+  margin: 8px 0 16px;
+  opacity: 0.9;
+}
+
+.promoButton {
+  width: 100%;
+  padding: 10px;
+  background: white;
+  color: #2563eb;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+}

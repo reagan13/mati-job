@@ -1,0 +1,73 @@
+.main {
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 70px 4rem 0; /* 70px top for Navbar, 4rem sides as requested */
+  background-color: #ffffff;
+
+  /* PRO-LEVEL DOT GRID + SUBTLE DEPTH */
+  background-image:
+    radial-gradient(#e5e7eb 1.2px, transparent 1.2px),
+    linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  background-size:
+    30px 30px,
+    100% 100%;
+  position: relative;
+}
+
+.leftSidebar,
+.rightSidebar {
+  width: 350px;
+  height: calc(100vh - 70px);
+  position: fixed;
+  top: 70px;
+  padding: 2rem 1.5rem;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  /* Glassmorphism: Allows the dots to subtly show behind panels */
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 5;
+}
+
+.leftSidebar {
+  left: 0;
+}
+
+.rightSidebar {
+  right: 0;
+}
+
+.feedWrapper {
+  margin-left: 350px;
+  margin-right: 350px;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 1;
+}
+
+/* Responsive Logic */
+@media (max-width: 1250px) {
+  .rightSidebar {
+    display: none;
+  }
+  .feedWrapper {
+    margin-right: 0;
+  }
+}
+
+@media (max-width: 900px) {
+  .leftSidebar {
+    display: none;
+  }
+  .feedWrapper {
+    margin-left: 0;
+  }
+  .main {
+    padding: 70px 1rem 0;
+  }
+}

@@ -1,0 +1,137 @@
+.feedContainer {
+  flex: 1;
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+}
+
+@media (max-width: 600px) {
+  .feedContainer {
+    padding: 1rem;
+  }
+}
+
+.searchCard,
+.recommendationCard {
+  background: white;
+  padding: 2rem;
+  border-radius: 24px;
+  border: 1px solid #e2e8f0;
+  max-width: 1000px;
+}
+
+.title {
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin-bottom: 1.2rem;
+  color: #0f172a;
+}
+
+.highlight {
+  color: #3b82f6;
+}
+
+.recommendationTitle {
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+.jobList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.jobCard {
+  padding: 1.5rem;
+  border-radius: 16px;
+  border: 1px solid #f1f5f9;
+  background: #ffffff;
+  transition:
+    transform 0.2s,
+    border-color 0.2s;
+}
+
+.jobCard:hover {
+  border-color: #3b82f6;
+  transform: translateY(-2px);
+}
+
+.jobHeader {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.logoPlaceholder {
+  width: 48px;
+  height: 48px;
+  background: #f8fafc;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.jobInfo {
+  flex: 1;
+}
+
+.jobTitleText {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.companyNameText {
+  margin: 2px 0 0;
+  font-size: 0.9rem;
+  color: #64748b;
+}
+
+.postDate {
+  font-size: 0.8rem;
+  color: #94a3b8;
+}
+
+.detailsGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 1.2rem;
+}
+
+.detailItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: #475569;
+}
+
+.cardActions {
+  display: flex;
+  gap: 10px;
+}
+
+.applyBtn {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.saveBtn {
+  background: white;
+  color: #64748b;
+  border: 1px solid #e2e8f0;
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
