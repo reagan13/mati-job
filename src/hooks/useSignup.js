@@ -37,7 +37,7 @@ export const useSignup = () => {
 
     setLoading(true);
     const data = new FormData(e.target);
-    data.append("role", formData.role);
+    data.append("role", formData.role); // Manually inject role
 
     const result = await signUpUser(data);
     if (result.error) setMessage({ type: "error", text: result.error });

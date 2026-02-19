@@ -6,7 +6,6 @@ import Footer from "@/components/layout/Footer";
 
 export default async function Home() {
   const cookieStore = await cookies();
-
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
@@ -20,9 +19,7 @@ export default async function Home() {
             cookiesToSet.forEach(({ name, value, options }) =>
               cookieStore.set(name, value, options),
             );
-          } catch {
-            // The middleware handles cookie refreshing; safe to ignore in Server Components
-          }
+          } catch {}
         },
       },
     },
@@ -31,11 +28,7 @@ export default async function Home() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-
-  // Redundancy check in case middleware is bypassed
-  if (!user) {
-    redirect("/login");
-  }
+  if (!user) redirect("/login");
 
   const { data: profile } = await supabase
     .from("profiles")
@@ -60,7 +53,6 @@ export default async function Home() {
           <p>
             Logged in as: <strong>{user.email}</strong>
           </p>
-
           <div
             style={{
               marginTop: "2rem",

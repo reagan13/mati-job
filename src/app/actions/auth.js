@@ -2,11 +2,10 @@
 
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
+import { UserProfileModel } from "@/models/users";
 
-// Helper function to create the supabase client with cookie support
 async function getSupabaseClient() {
   const cookieStore = await cookies();
-
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
@@ -20,9 +19,7 @@ async function getSupabaseClient() {
             cookiesToSet.forEach(({ name, value, options }) =>
               cookieStore.set(name, value, options),
             );
-          } catch {
-            // This can be ignored if the middleware handles refreshes
-          }
+          } catch {}
         },
       },
     },
@@ -31,20 +28,16 @@ async function getSupabaseClient() {
 
 export async function signUpUser(formData) {
   const supabase = await getSupabaseClient();
-
-  // Assuming UserProfileModel extracts data from formData
-  const email = formData.get("email");
+  const userModel = UserProfileModel(formData);
   const password = formData.get("password");
-  const fullName = formData.get("full_name"); // Adjust based on your model
-  const role = formData.get("role");
 
-  const { error } = await supabase.auth.signUp({
-    email,
+  const { data, error } = await supabase.auth.signUp({
+    email: userModel.email,
     password,
     options: {
       data: {
-        full_name: fullName,
-        role: role,
+        full_name: userModel.fullName,
+        role: userModel.role,
       },
     },
   });
@@ -58,12 +51,8 @@ export async function signInUser(formData) {
   const email = formData.get("email");
   const password = formData.get("password");
 
-  const { error } = await supabase.auth.signInWithPassword({
-    email,
-    password,
-  });
+  const { error } = await supabase.auth.signInWithPassword({ email, password });
 
   if (error) return { error: error.message };
-
   return { success: "Login successful! Redirecting..." };
 }
