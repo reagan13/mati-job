@@ -6,7 +6,6 @@ import {
   Settings,
 } from "lucide-react";
 import styles from "./LeftActionPanel.module.css";
-// Import sub-components
 import IdentityCard from "../leftpanel/IdentityCard";
 import StatCard from "../leftpanel/StatCard";
 import ProfileStrength from "../leftpanel/ProfileStrength";
