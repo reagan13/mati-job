@@ -5,7 +5,7 @@ import { Menu, X } from "lucide-react";
 import { createBrowserClient } from "@supabase/ssr";
 import styles from "./Navbar.module.css";
 import Button from "../ui/Button";
-import ProfileDropdown from "./ProfileDropdown"; // Import the dropdown
+import ProfileDropdown from "./ProfileDropdown";
 
 const Navbar = ({ user: initialUser, profile }) => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -21,7 +21,6 @@ const Navbar = ({ user: initialUser, profile }) => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
 
-    // Listen for Auth Changes to keep UI in sync
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -43,6 +42,7 @@ const Navbar = ({ user: initialUser, profile }) => {
           MATI<span className={styles.logoDot}>JOB</span>
         </Link>
 
+        {/* Desktop and Mobile Slide-out Links */}
         <nav className={`${styles.navLinks} ${isOpen ? styles.navActive : ""}`}>
           <Link href="/commission" className={styles.link} onClick={closeMenu}>
             Commission
@@ -55,40 +55,38 @@ const Navbar = ({ user: initialUser, profile }) => {
             <Button href="/post-job" variant="primary" onClick={closeMenu}>
               Post a Job
             </Button>
-            {!user ? (
+            {!user && (
               <Button href="/login" variant="secondary" onClick={closeMenu}>
                 Sign In
               </Button>
-            ) : (
-              <Link
-                href="/home"
-                className={styles.userIconMobile}
-                onClick={closeMenu}
-              >
-                <span>Dashboard</span>
-              </Link>
             )}
           </div>
         </nav>
 
+        {/* Actions Area: User Icon and Hamburger Toggle */}
         <div className={styles.ctaWrapper}>
           <div className={styles.desktopCta}>
             <Button href="/post-job" variant="primary">
               Post a Job
             </Button>
-
-            {!user ? (
+            {!user && (
               <Button href="/login" variant="secondary">
                 Sign In
               </Button>
-            ) : (
-              <ProfileDropdown user={user} profile={profile} />
             )}
           </div>
+
+          {/* User Icon: Stays visible and sits left of hamburger on mobile */}
+          {user && (
+            <div className={styles.userSection}>
+              <ProfileDropdown user={user} profile={profile} />
+            </div>
+          )}
 
           <button
             className={styles.menuToggle}
             onClick={() => setIsOpen(!isOpen)}
+            aria-label="Toggle menu"
           >
             {isOpen ? <X size={28} /> : <Menu size={28} />}
           </button>

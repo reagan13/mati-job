@@ -1,0 +1,170 @@
+.wrapper {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.searchBar {
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e2e8f0;
+  gap: 4px;
+}
+
+.inputGroup {
+  flex: 2; /* Gives more room to the keyword search */
+  display: flex;
+  align-items: center;
+  padding-left: 1rem;
+}
+
+.filterGroup {
+  flex: 1; /* Standard width for dropdowns */
+}
+
+.icon {
+  color: #94a3b8;
+  margin-right: 12px;
+}
+
+.mainInput {
+  width: 100%;
+  border: none;
+  outline: none;
+  font-size: 0.95rem;
+  color: #1e293b;
+  padding: 12px 0;
+  background: transparent;
+}
+
+.mainInput::placeholder {
+  color: #94a3b8;
+}
+
+.divider {
+  width: 1px;
+  height: 32px;
+  background: #e2e8f0;
+  margin: 0 8px;
+}
+
+.searchBtn {
+  background: #0070f3;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.searchBtn:hover {
+  background: #0056b3;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 112, 243, 0.2);
+}
+
+.btnIcon {
+  display: none; /* Only show text on desktop */
+}
+
+/* Responsive Structural Changes */
+@media (max-width: 1024px) {
+  .searchBar {
+    flex-wrap: wrap;
+    padding: 12px;
+  }
+
+  .divider {
+    display: none;
+  }
+
+  .inputGroup,
+  .filterGroup {
+    flex: 1 1 calc(50% - 10px);
+    border: 1px solid #f1f5f9;
+    border-radius: 8px;
+    margin-bottom: 8px;
+  }
+
+  .searchBtn {
+    flex: 1 1 100%;
+    justify-content: center;
+    padding: 16px;
+  }
+}
+
+@media (max-width: 640px) {
+  .inputGroup,
+  .filterGroup {
+    flex: 1 1 100%;
+  }
+}
+
+.searchBar {
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e2e8f0;
+  gap: 2px; /* Reduced gap to fit more items */
+}
+
+.inputGroup {
+  flex: 1.5; /* Slightly reduced weight for the main input */
+  display: flex;
+  align-items: center;
+  padding-left: 0.8rem;
+}
+
+.filterGroup {
+  flex: 1;
+  min-width: 120px; /* Ensures dropdowns don't get too small */
+}
+
+.divider {
+  width: 1px;
+  height: 32px;
+  background: #f1f5f9;
+  margin: 0 4px;
+}
+
+/* Responsive updates for more items */
+@media (max-width: 1200px) {
+  .searchBar {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .divider {
+    display: none;
+  }
+
+  .inputGroup {
+    flex: 1 1 100%;
+    border-bottom: 1px solid #f1f5f9;
+    margin-bottom: 8px;
+  }
+
+  .filterGroup {
+    flex: 1 1 calc(25% - 8px); /* 4 items per row on medium screens */
+  }
+}
+
+@media (max-width: 768px) {
+  .filterGroup {
+    flex: 1 1 calc(50% - 8px); /* 2 items per row on tablet */
+  }
+}

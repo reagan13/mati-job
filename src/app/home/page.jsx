@@ -3,8 +3,9 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import Button from "@/components/ui/Button"; // Import your UI Button
-import { signOutUser } from "../actions/auth"; // Import the action
+import Button from "@/components/ui/Button";
+import { signOutUser } from "../actions/auth";
+import SearchFilter from "@/components/sections/SearchFilter";
 
 export default async function Home() {
   const cookieStore = await cookies();
@@ -36,17 +37,22 @@ export default async function Home() {
       <Navbar user={user} profile={profile} />
       <main
         style={{
-          padding: "4rem 2rem",
+          padding: "6rem 2rem 4rem",
           minHeight: "80vh",
           background: "#fdfdfd",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          justifyContent: "center",
         }}
       >
+        <SearchFilter />
         <div
-          style={{ maxWidth: "600px", margin: "0 auto", textAlign: "center" }}
+          style={{
+            maxWidth: "600px",
+            width: "100%",
+            margin: "2rem auto 0",
+            textAlign: "center",
+          }}
         >
           <h1>Welcome to MATIJOB</h1>
           <p>

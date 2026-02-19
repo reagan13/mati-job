@@ -8,8 +8,7 @@ import {
   User,
 } from "lucide-react";
 import { useDropdown } from "@/hooks/useDropdown";
-import { signOutUser } from "@/app/actions/auth"; // Ensure this path is correct
-import Button from "../ui/Button";
+import { signOutUser } from "@/app/actions/auth";
 import styles from "./ProfileDropdown.module.css";
 
 const ProfileDropdown = ({ user, profile }) => {
@@ -22,7 +21,7 @@ const ProfileDropdown = ({ user, profile }) => {
       onMouseEnter={open}
       onMouseLeave={close}
     >
-      <div className={styles.avatarWrapper}>
+      <div className={styles.avatarWrapper} onClick={isOpen ? close : open}>
         <div className={styles.avatarInner}>
           <CircleUser size={24} strokeWidth={1.5} />
         </div>
@@ -30,7 +29,6 @@ const ProfileDropdown = ({ user, profile }) => {
 
       {isOpen && (
         <div className={styles.dropdownMenu}>
-          {/* User Info Header */}
           <div className={styles.userInfo}>
             <p className={styles.userName}>
               {profile?.full_name || "New User"}
@@ -59,18 +57,16 @@ const ProfileDropdown = ({ user, profile }) => {
 
           <div className={styles.divider} />
 
-          <div className={styles.logoutWrapper}>
-            <form action={signOutUser}>
-              <Button
-                variant="secondary"
-                type="submit"
-                className={styles.logoutBtn}
-              >
-                <LogOut size={18} />
-                <span>Sign Out</span>
-              </Button>
-            </form>
-          </div>
+          {/* Sign Out Form integrated into the list */}
+          <form action={signOutUser} style={{ width: "100%" }}>
+            <button
+              type="submit"
+              className={`${styles.dropdownItem} ${styles.logoutBtn}`}
+            >
+              <LogOut size={18} />
+              <span>Sign Out</span>
+            </button>
+          </form>
         </div>
       )}
     </div>
