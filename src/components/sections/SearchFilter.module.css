@@ -115,18 +115,21 @@
   background: #ffffff;
   display: flex;
   align-items: center;
-  padding: 8px;
+  padding: 12px; /* Increased padding slightly for mobile feel */
   border-radius: 16px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
   border: 1px solid #e2e8f0;
-  gap: 2px; /* Reduced gap to fit more items */
+  gap: 12px; /* Standardize gap for wrapping */
+  margin-left: -30px; /* Centers the bar within the wrapper */
 }
 
 .inputGroup {
-  flex: 1.5; /* Slightly reduced weight for the main input */
+  flex: 2;
   display: flex;
   align-items: center;
-  padding-left: 0.8rem;
+  padding-left: 1rem;
+  /* Ensure the input itself doesn't pull left if the container grows */
+  justify-content: flex-start;
 }
 
 .filterGroup {

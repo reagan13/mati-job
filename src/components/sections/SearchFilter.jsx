@@ -74,7 +74,11 @@ const SearchFilter = () => {
         <div className={styles.divider} />
 
         <div className={styles.filterGroup}>
-          <CustomSelect icon={Banknote} placeholder="Salary" />
+          <CustomSelect
+            icon={Banknote}
+            placeholder="Salary"
+            options={salaryOptions}
+          />
         </div>
 
         <button className={styles.searchBtn}>
