@@ -3,9 +3,8 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import Button from "@/components/ui/Button";
-import { signOutUser } from "../actions/auth";
 import SearchFilter from "@/components/sections/SearchFilter";
+import LeftActionPanel from "@/components/layout/LeftActionPanel";
 
 export default async function Home() {
   const cookieStore = await cookies();
@@ -35,59 +34,90 @@ export default async function Home() {
   return (
     <>
       <Navbar user={user} profile={profile} />
+
       <main
         style={{
-          padding: "6rem 2rem 4rem",
-          minHeight: "80vh",
-          background: "#fdfdfd",
+          background: "#f8fafc",
+          minHeight: "100vh",
+          paddingTop: "70px", // Height of your navbar
           display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
         }}
       >
-        <SearchFilter />
-        <div
+        {/* LEFT SIDEBAR SECTION */}
+        <aside
           style={{
-            maxWidth: "600px",
-            width: "100%",
-            margin: "2rem auto 0",
-            textAlign: "center",
+            width: "350px",
+            backgroundColor: "transparent",
+            padding: "2rem 1.5rem",
+            height: "calc(100vh - 70px)", // Fill remaining height
+            position: "fixed", // Keep it pinned while scrolling the right side
+            left: 0,
+            overflowY: "auto",
           }}
         >
-          <h1>Welcome to MATIJOB</h1>
-          <p>
-            Logged in as: <strong>{user.email}</strong>
-          </p>
+          <LeftActionPanel profile={profile} />
+        </aside>
+
+        {/* RIGHT CONTENT SECTION */}
+        <section
+          style={{
+            flex: 1,
+            marginLeft: "350px", // Matches sidebar width
+            padding: "2.5rem",
+            display: "flex",
+            flexDirection: "column",
+            gap: "2rem",
+          }}
+        >
+          <div
+            style={{
+              background: "white",
+              padding: "2rem",
+              borderRadius: "24px",
+              border: "1px solid #e2e8f0",
+              maxWidth: "1000px", // Optional: keep the search bar from stretching too wide
+            }}
+          >
+            <h1
+              style={{
+                fontSize: "1.8rem",
+                fontWeight: "800",
+                marginBottom: "1.2rem",
+                color: "#0f172a",
+              }}
+            >
+              Find your next{" "}
+              <span style={{ color: "#3b82f6" }}>opportunity.</span>
+            </h1>
+            <SearchFilter />
+          </div>
 
           <div
             style={{
-              marginTop: "2rem",
+              minHeight: "400px",
               padding: "2rem",
-              border: "1px solid #ddd",
-              borderRadius: "8px",
-              backgroundColor: "white",
+              background: "white",
+              borderRadius: "24px",
+              border: "1px solid #e2e8f0",
+              maxWidth: "1000px",
             }}
           >
-            <h3>User Profile</h3>
-            <p>Name: {profile?.full_name || "New User"}</p>
-            <p>
-              Role:{" "}
-              <span style={{ textTransform: "uppercase", fontWeight: "bold" }}>
-                {profile?.role || "Not Set"}
-              </span>
-            </p>
-
-            <div style={{ marginTop: "2rem" }}>
-              <form action={signOutUser}>
-                <Button variant="danger" type="submit">
-                  SIGN OUT
-                </Button>
-              </form>
+            <h3 style={{ marginBottom: "1.5rem" }}>Recommended for you</h3>
+            <div
+              style={{
+                padding: "60px",
+                textAlign: "center",
+                color: "#94a3b8",
+                border: "2px dashed #f1f5f9",
+                borderRadius: "16px",
+              }}
+            >
+              We&apos;re tailoring the best matches for your profile...
             </div>
           </div>
-        </div>
+        </section>
       </main>
-      <Footer />
+      {/* Remove footer if you want a true full-screen dashboard feel, or keep it inside the section */}
     </>
   );
 }
