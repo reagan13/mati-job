@@ -33,7 +33,7 @@ export default async function Home() {
 
   return (
     <>
-      <Navbar />
+      <Navbar user={user} profile={profile} />
       <main
         style={{
           padding: "4rem 2rem",

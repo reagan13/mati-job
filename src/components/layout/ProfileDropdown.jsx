@@ -8,10 +8,11 @@ import {
   User,
 } from "lucide-react";
 import { useDropdown } from "@/hooks/useDropdown";
+import { signOutUser } from "@/app/actions/auth"; // Ensure this path is correct
 import Button from "../ui/Button";
 import styles from "./ProfileDropdown.module.css";
 
-const ProfileDropdown = ({ user, logout }) => {
+const ProfileDropdown = ({ user, profile }) => {
   const { isOpen, open, close, containerRef } = useDropdown();
 
   return (
@@ -29,15 +30,29 @@ const ProfileDropdown = ({ user, logout }) => {
 
       {isOpen && (
         <div className={styles.dropdownMenu}>
-          <Link href="/home" className={styles.dropdownItem}>
+          {/* User Info Header */}
+          <div className={styles.userInfo}>
+            <p className={styles.userName}>
+              {profile?.full_name || "New User"}
+            </p>
+            <p className={styles.userEmail}>{user?.email}</p>
+          </div>
+
+          <div className={styles.divider} />
+
+          <Link href="/home" className={styles.dropdownItem} onClick={close}>
             <LayoutDashboard size={18} />
             <span>Dashboard</span>
           </Link>
-          <Link href="/profile" className={styles.dropdownItem}>
+          <Link href="/profile" className={styles.dropdownItem} onClick={close}>
             <User size={18} />
             <span>My Profile</span>
           </Link>
-          <Link href="/settings" className={styles.dropdownItem}>
+          <Link
+            href="/settings"
+            className={styles.dropdownItem}
+            onClick={close}
+          >
             <Settings size={18} />
             <span>Settings</span>
           </Link>
@@ -45,14 +60,16 @@ const ProfileDropdown = ({ user, logout }) => {
           <div className={styles.divider} />
 
           <div className={styles.logoutWrapper}>
-            <Button
-              variant="secondary"
-              onClick={logout}
-              className={styles.logoutBtn}
-            >
-              <LogOut size={18} />
-              <span>Sign Out</span>
-            </Button>
+            <form action={signOutUser}>
+              <Button
+                variant="secondary"
+                type="submit"
+                className={styles.logoutBtn}
+              >
+                <LogOut size={18} />
+                <span>Sign Out</span>
+              </Button>
+            </form>
           </div>
         </div>
       )}

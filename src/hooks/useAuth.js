@@ -1,13 +1,11 @@
 "use client";
 import { useState, useEffect } from "react";
 import { createBrowserClient } from "@supabase/ssr";
-import { useRouter } from "next/navigation";
-import { signOutUser } from "@/app/actions/auth";
 
 export const useAuth = () => {
   const [user, setUser] = useState(null);
+  const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
-  const router = useRouter();
 
   const supabase = createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -15,33 +13,46 @@ export const useAuth = () => {
   );
 
   useEffect(() => {
-    const initializeAuth = async () => {
+    const fetchUserData = async () => {
       const {
-        data: { user },
+        data: { user: authUser },
       } = await supabase.auth.getUser();
-      setUser(user);
+      setUser(authUser);
+
+      if (authUser) {
+        const { data: profileData } = await supabase
+          .from("profiles")
+          .select("full_name, email, role")
+          .eq("id", authUser.id)
+          .single();
+
+        setProfile(profileData);
+      }
       setLoading(false);
     };
 
-    initializeAuth();
+    fetchUserData();
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-      setLoading(false);
+    } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      const currentUser = session?.user ?? null;
+      setUser(currentUser);
+
+      if (currentUser) {
+        const { data } = await supabase
+          .from("profiles")
+          .select("full_name, email, role")
+          .eq("id", currentUser.id)
+          .single();
+        setProfile(data);
+      } else {
+        setProfile(null);
+      }
     });
 
     return () => subscription.unsubscribe();
   }, [supabase]);
 
-  const handleSignOut = async () => {
-    setLoading(true);
-    await signOutUser();
-    setUser(null);
-    router.push("/login");
-    setLoading(false);
-  };
-
-  return { user, loading, handleSignOut, supabase };
+  return { user, profile, loading };
 };

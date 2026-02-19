@@ -2,21 +2,37 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
-import { useAuth } from "@/hooks/useAuth";
+import { createBrowserClient } from "@supabase/ssr";
 import styles from "./Navbar.module.css";
 import Button from "../ui/Button";
-import ProfileDropdown from "./ProfileDropdown";
+import ProfileDropdown from "./ProfileDropdown"; // Import the dropdown
 
-const Navbar = () => {
+const Navbar = ({ user: initialUser, profile }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const { user } = useAuth();
+  const [user, setUser] = useState(initialUser);
+
+  const supabase = createBrowserClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+  );
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+
+    // Listen for Auth Changes to keep UI in sync
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      subscription.unsubscribe();
+    };
+  }, [supabase]);
 
   const closeMenu = () => setIsOpen(false);
 
@@ -34,6 +50,25 @@ const Navbar = () => {
           <Link href="/find-jobs" className={styles.link} onClick={closeMenu}>
             Jobs
           </Link>
+
+          <div className={styles.mobileCta}>
+            <Button href="/post-job" variant="primary" onClick={closeMenu}>
+              Post a Job
+            </Button>
+            {!user ? (
+              <Button href="/login" variant="secondary" onClick={closeMenu}>
+                Sign In
+              </Button>
+            ) : (
+              <Link
+                href="/home"
+                className={styles.userIconMobile}
+                onClick={closeMenu}
+              >
+                <span>Dashboard</span>
+              </Link>
+            )}
+          </div>
         </nav>
 
         <div className={styles.ctaWrapper}>
@@ -41,12 +76,13 @@ const Navbar = () => {
             <Button href="/post-job" variant="primary">
               Post a Job
             </Button>
+
             {!user ? (
               <Button href="/login" variant="secondary">
                 Sign In
               </Button>
             ) : (
-              <ProfileDropdown user={user} />
+              <ProfileDropdown user={user} profile={profile} />
             )}
           </div>
 

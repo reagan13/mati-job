@@ -2,8 +2,8 @@
   position: relative;
   display: flex;
   align-items: center;
-  padding-bottom: 15px; /* Creates a bridge to the dropdown */
-  margin-bottom: -15px; /* Offset the padding so it doesn't push other nav items */
+  padding-bottom: 15px;
+  margin-bottom: -15px;
   z-index: 1002;
 }
 
@@ -36,7 +36,7 @@
 
 .dropdownMenu {
   position: absolute;
-  top: 100%; /* Sits right at the bottom of the container bridge */
+  top: 100%;
   right: 0;
   width: 220px;
   background: #ffffff;
@@ -100,4 +100,28 @@
 .logoutBtn:hover {
   background: #fef2f2 !important;
   color: #b91c1c !important;
+}
+
+.userInfo {
+  padding: 8px 12px;
+  margin-bottom: 4px;
+}
+
+.userName {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+}
+
+.userEmail {
+  font-size: 0.8rem;
+  color: #64748b;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .profileContainer {
+    display: none;
+  }
 }
