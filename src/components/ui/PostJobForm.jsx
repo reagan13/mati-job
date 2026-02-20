@@ -1,8 +1,8 @@
 "use client";
-import { useState } from "react";
-import { createBrowserClient } from "@supabase/ssr";
+import { usePostJob } from "@/hooks/usePostJob";
 import {
   Briefcase,
+  Building2,
   MapPin,
   Banknote,
   Clock,
@@ -17,19 +17,25 @@ import Button from "./Button";
 import CustomSelect from "./CustomSelect";
 
 export default function PostJobForm({ userProfile }) {
-  const [loading, setLoading] = useState(false);
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [previewUrl, setPreviewUrl] = useState(null);
-  const [formData, setFormData] = useState({
-    title: "",
-    company: userProfile?.company_name || "",
-    location: "",
-    full_address: "",
-    landmark: "",
-    type: "",
-    salary: "",
-    description: "",
-  });
+  const {
+    formData,
+    setFormData,
+    loading,
+    previewUrl,
+    handleFileChange,
+    removeFile,
+    submitJob,
+  } = usePostJob(userProfile);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await submitJob();
+      alert("Job successfully posted!");
+    } catch (error) {
+      alert(error.message);
+    }
+  };
 
   const jobTypeOptions = [
     { label: "Full-time", value: "Full-time" },
@@ -69,96 +75,41 @@ export default function PostJobForm({ userProfile }) {
     { label: "Tamisan", value: "Tamisan" },
   ];
 
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-  );
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setSelectedFile(file);
-      setPreviewUrl(URL.createObjectURL(file));
-    }
-  };
-
-  const removeFile = () => {
-    setSelectedFile(null);
-    setPreviewUrl(null);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!formData.type) return alert("Please select an employment type");
-    if (!formData.location) return alert("Please select a location/barangay");
-
-    setLoading(true);
-    let imageUrl = null;
-
-    if (selectedFile) {
-      const fileExt = selectedFile.name.split(".").pop();
-      const fileName = `${Math.random()}.${fileExt}`;
-      const filePath = `job-posters/${fileName}`;
-
-      const { error: uploadError } = await supabase.storage
-        .from("job-attachments")
-        .upload(filePath, selectedFile);
-
-      if (uploadError) {
-        alert("Error uploading image: " + uploadError.message);
-        setLoading(false);
-        return;
-      }
-
-      const {
-        data: { publicUrl },
-      } = supabase.storage.from("job-attachments").getPublicUrl(filePath);
-
-      imageUrl = publicUrl;
-    }
-
-    const { error } = await supabase.from("jobs").insert([
-      {
-        ...formData,
-        image_url: imageUrl,
-        user_id: userProfile?.id,
-        posted: new Date().toISOString(),
-      },
-    ]);
-
-    if (error) {
-      alert("Error: " + error.message);
-    } else {
-      alert("Job successfully posted!");
-      setFormData({
-        title: "",
-        company: userProfile?.company_name || "",
-        location: "",
-        full_address: "",
-        landmark: "",
-        salary: "",
-        description: "",
-        type: "",
-      });
-      setSelectedFile(null);
-      setPreviewUrl(null);
-    }
-    setLoading(false);
-  };
-
   return (
     <form className={styles.formContainer} onSubmit={handleSubmit}>
-      <div className={styles.inputGroup}>
-        <label className={styles.label}>
-          <Briefcase size={16} /> Job Title
-        </label>
-        <input
-          required
-          className={styles.textInput}
-          placeholder="e.g. Senior Full Stack Developer"
-          value={formData.title}
-          onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-        />
+      <div className={styles.gridInputs}>
+        <div className={styles.inputGroup}>
+          <div className={styles.floatingGroup}>
+            <input
+              required
+              className={styles.textInput}
+              placeholder=" "
+              value={formData.title}
+              onChange={(e) =>
+                setFormData({ ...formData, title: e.target.value })
+              }
+            />
+            <label className={styles.floatingLabel}>
+              <Briefcase size={14} /> Job Title
+            </label>
+          </div>
+        </div>
+        <div className={styles.inputGroup}>
+          <div className={styles.floatingGroup}>
+            <input
+              required
+              className={styles.textInput}
+              placeholder=" "
+              value={formData.company}
+              onChange={(e) =>
+                setFormData({ ...formData, company: e.target.value })
+              }
+            />
+            <label className={styles.floatingLabel}>
+              <Building2 size={14} /> Company Name
+            </label>
+          </div>
+        </div>
       </div>
 
       <div className={styles.gridInputs}>
@@ -176,10 +127,9 @@ export default function PostJobForm({ userProfile }) {
             />
           </div>
         </div>
-
         <div className={styles.inputGroup}>
           <label className={styles.label}>
-            <MapPin size={16} /> Barangay (Mati City)
+            <MapPin size={16} /> Barangay
           </label>
           <div className={styles.selectWrapperCustom}>
             <CustomSelect
@@ -195,38 +145,41 @@ export default function PostJobForm({ userProfile }) {
 
       <div className={styles.gridInputs}>
         <div className={styles.inputGroup}>
-          <label className={styles.label}>
-            <Home size={16} /> Full Address
-          </label>
-          <input
-            required
-            className={styles.textInput}
-            placeholder="Street, Phase, House No."
-            value={formData.full_address}
-            onChange={(e) =>
-              setFormData({ ...formData, full_address: e.target.value })
-            }
-          />
+          <div className={styles.floatingGroup}>
+            <input
+              required
+              className={styles.textInput}
+              placeholder=" "
+              value={formData.full_address}
+              onChange={(e) =>
+                setFormData({ ...formData, full_address: e.target.value })
+              }
+            />
+            <label className={styles.floatingLabel}>
+              <Home size={14} /> Full Address
+            </label>
+          </div>
         </div>
-
         <div className={styles.inputGroup}>
-          <label className={styles.label}>
-            <Landmark size={16} /> Landmark
-          </label>
-          <input
-            className={styles.textInput}
-            placeholder="e.g. Near Mati City Hall"
-            value={formData.landmark}
-            onChange={(e) =>
-              setFormData({ ...formData, landmark: e.target.value })
-            }
-          />
+          <div className={styles.floatingGroup}>
+            <input
+              className={styles.textInput}
+              placeholder=" "
+              value={formData.landmark}
+              onChange={(e) =>
+                setFormData({ ...formData, landmark: e.target.value })
+              }
+            />
+            <label className={styles.floatingLabel}>
+              <Landmark size={14} /> Landmark
+            </label>
+          </div>
         </div>
       </div>
 
       <div className={styles.inputGroup}>
         <label className={styles.label}>
-          <ImageIcon size={16} /> Hiring Visual (Optional)
+          <ImageIcon size={16} /> Hiring Visual
         </label>
         <div className={styles.fileUploadContainer}>
           <input
@@ -235,10 +188,11 @@ export default function PostJobForm({ userProfile }) {
             onChange={handleFileChange}
             id="fileInput"
             className={styles.hiddenInput}
+            style={{ display: "none" }}
           />
           {!previewUrl ? (
             <label htmlFor="fileInput" className={styles.fileLabel}>
-              <span>Click to upload hiring poster or photo</span>
+              Click to upload hiring poster
             </label>
           ) : (
             <div className={styles.previewContainer}>
@@ -260,30 +214,36 @@ export default function PostJobForm({ userProfile }) {
       </div>
 
       <div className={styles.inputGroup}>
-        <label className={styles.label}>
-          <Banknote size={16} /> Salary Range
-        </label>
-        <input
-          className={styles.textInput}
-          placeholder="e.g. ₱20,000 - ₱30,000"
-          value={formData.salary}
-          onChange={(e) => setFormData({ ...formData, salary: e.target.value })}
-        />
+        <div className={styles.floatingGroup}>
+          <input
+            className={styles.textInput}
+            placeholder=" "
+            value={formData.salary}
+            onChange={(e) =>
+              setFormData({ ...formData, salary: e.target.value })
+            }
+          />
+          <label className={styles.floatingLabel}>
+            <Banknote size={14} /> Salary Range
+          </label>
+        </div>
       </div>
 
       <div className={styles.inputGroup}>
-        <label className={styles.label}>
-          <FileText size={16} /> Job Description
-        </label>
-        <textarea
-          className={styles.textArea}
-          rows="5"
-          placeholder="Describe the job roles..."
-          value={formData.description}
-          onChange={(e) =>
-            setFormData({ ...formData, description: e.target.value })
-          }
-        />
+        <div className={styles.floatingGroup}>
+          <textarea
+            className={styles.textArea}
+            rows="5"
+            placeholder=" "
+            value={formData.description}
+            onChange={(e) =>
+              setFormData({ ...formData, description: e.target.value })
+            }
+          />
+          <label className={styles.floatingLabel}>
+            <FileText size={14} /> Job Description
+          </label>
+        </div>
       </div>
 
       <Button
