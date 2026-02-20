@@ -1,17 +1,31 @@
 "use client";
 import { useState } from "react";
 import { createBrowserClient } from "@supabase/ssr";
-import { Briefcase, MapPin, Banknote, Clock, FileText } from "lucide-react";
+import {
+  Briefcase,
+  MapPin,
+  Banknote,
+  Clock,
+  FileText,
+  Home,
+  Landmark,
+  Image as ImageIcon,
+  X,
+} from "lucide-react";
 import styles from "./PostJobForm.module.css";
 import Button from "./Button";
 import CustomSelect from "./CustomSelect";
 
 export default function PostJobForm({ userProfile }) {
   const [loading, setLoading] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState(null);
   const [formData, setFormData] = useState({
     title: "",
     company: userProfile?.company_name || "",
-    location: "", // This will store the selected Barangay
+    location: "",
+    full_address: "",
+    landmark: "",
     type: "",
     salary: "",
     description: "",
@@ -21,11 +35,11 @@ export default function PostJobForm({ userProfile }) {
     { label: "Full-time", value: "Full-time" },
     { label: "Contract", value: "Contract" },
     { label: "Freelance", value: "Freelance" },
+    { label: "Commision", value: "Commision" },
     { label: "Remote", value: "Remote" },
     { label: "Internship", value: "Internship" },
   ];
 
-  // All 26 Barangays of Mati City
   const matiBarangays = [
     { label: "Badas", value: "Badas" },
     { label: "Bobon", value: "Bobon" },
@@ -60,15 +74,53 @@ export default function PostJobForm({ userProfile }) {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
   );
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedFile(file);
+      setPreviewUrl(URL.createObjectURL(file));
+    }
+  };
+
+  const removeFile = () => {
+    setSelectedFile(null);
+    setPreviewUrl(null);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.type) return alert("Please select an employment type");
     if (!formData.location) return alert("Please select a location/barangay");
 
     setLoading(true);
+    let imageUrl = null;
+
+    if (selectedFile) {
+      const fileExt = selectedFile.name.split(".").pop();
+      const fileName = `${Math.random()}.${fileExt}`;
+      const filePath = `job-posters/${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from("job-attachments")
+        .upload(filePath, selectedFile);
+
+      if (uploadError) {
+        alert("Error uploading image: " + uploadError.message);
+        setLoading(false);
+        return;
+      }
+
+      const {
+        data: { publicUrl },
+      } = supabase.storage.from("job-attachments").getPublicUrl(filePath);
+
+      imageUrl = publicUrl;
+    }
+
     const { error } = await supabase.from("jobs").insert([
       {
         ...formData,
+        image_url: imageUrl,
         user_id: userProfile?.id,
         posted: new Date().toISOString(),
       },
@@ -82,10 +134,14 @@ export default function PostJobForm({ userProfile }) {
         title: "",
         company: userProfile?.company_name || "",
         location: "",
+        full_address: "",
+        landmark: "",
         salary: "",
         description: "",
         type: "",
       });
+      setSelectedFile(null);
+      setPreviewUrl(null);
     }
     setLoading(false);
   };
@@ -106,7 +162,6 @@ export default function PostJobForm({ userProfile }) {
       </div>
 
       <div className={styles.gridInputs}>
-        {/* Employment Type Dropdown */}
         <div className={styles.inputGroup}>
           <label className={styles.label}>
             <Clock size={16} /> Employment Type
@@ -122,7 +177,6 @@ export default function PostJobForm({ userProfile }) {
           </div>
         </div>
 
-        {/* Location / Barangay Dropdown */}
         <div className={styles.inputGroup}>
           <label className={styles.label}>
             <MapPin size={16} /> Barangay (Mati City)
@@ -136,6 +190,72 @@ export default function PostJobForm({ userProfile }) {
               onChange={(val) => setFormData({ ...formData, location: val })}
             />
           </div>
+        </div>
+      </div>
+
+      <div className={styles.gridInputs}>
+        <div className={styles.inputGroup}>
+          <label className={styles.label}>
+            <Home size={16} /> Full Address
+          </label>
+          <input
+            required
+            className={styles.textInput}
+            placeholder="Street, Phase, House No."
+            value={formData.full_address}
+            onChange={(e) =>
+              setFormData({ ...formData, full_address: e.target.value })
+            }
+          />
+        </div>
+
+        <div className={styles.inputGroup}>
+          <label className={styles.label}>
+            <Landmark size={16} /> Landmark
+          </label>
+          <input
+            className={styles.textInput}
+            placeholder="e.g. Near Mati City Hall"
+            value={formData.landmark}
+            onChange={(e) =>
+              setFormData({ ...formData, landmark: e.target.value })
+            }
+          />
+        </div>
+      </div>
+
+      <div className={styles.inputGroup}>
+        <label className={styles.label}>
+          <ImageIcon size={16} /> Hiring Visual (Optional)
+        </label>
+        <div className={styles.fileUploadContainer}>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+            id="fileInput"
+            className={styles.hiddenInput}
+          />
+          {!previewUrl ? (
+            <label htmlFor="fileInput" className={styles.fileLabel}>
+              <span>Click to upload hiring poster or photo</span>
+            </label>
+          ) : (
+            <div className={styles.previewContainer}>
+              <img
+                src={previewUrl}
+                alt="Preview"
+                className={styles.imagePreview}
+              />
+              <button
+                type="button"
+                onClick={removeFile}
+                className={styles.removeBtn}
+              >
+                <X size={16} />
+              </button>
+            </div>
+          )}
         </div>
       </div>
 

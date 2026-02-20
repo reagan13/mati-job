@@ -1,4 +1,3 @@
-/* PostJobForm.module.css */
 .formContainer {
   background: white;
   padding: 2.5rem;
@@ -27,11 +26,11 @@
   gap: 8px;
 }
 
-/* Base style for inputs */
 .textInput,
-.textArea {
+.textArea,
+.fileUploadContainer {
   width: 100%;
-  padding: 12px 16px;
+  padding: 12px 16px; /* Matches all inputs */
   border-radius: 12px;
   border: 1px solid #e2e8f0;
   font-size: 0.95rem;
@@ -41,16 +40,72 @@
   box-sizing: border-box;
 }
 
-/* FIX: Ensure dropdown list can float over other elements */
+.fileUploadContainer {
+  border-style: dashed; /* Specific dash style for upload */
+  background-color: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  cursor: pointer;
+}
+
+.fileUploadContainer:hover {
+  border-color: #3b82f6;
+  background-color: #f1f5f9;
+}
+
+.hiddenInput {
+  display: none;
+}
+
+.fileLabel {
+  cursor: pointer;
+  color: #64748b;
+  width: 100%;
+  text-align: center;
+}
+
+.previewContainer {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.imagePreview {
+  max-width: 100%;
+  max-height: 250px;
+  border-radius: 8px;
+  object-fit: contain;
+}
+
+.removeBtn {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 .selectWrapperCustom {
   width: 100%;
-  padding: 0; /* Remove padding to use CustomSelect's internal padding */
+  padding: 0;
   border-radius: 12px;
   border: 1px solid #e2e8f0;
   background-color: #ffffff;
   transition: all 0.2s ease;
   box-sizing: border-box;
-  overflow: visible; /* CRITICAL: Must be visible to show the scrollable list */
+  overflow: visible;
   position: relative;
 }
 
@@ -100,7 +155,6 @@
   .gridInputs {
     grid-template-columns: 1fr;
   }
-
   .formContainer {
     padding: 1.5rem;
   }

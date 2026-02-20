@@ -1,12 +1,20 @@
+/* PostJobPage.module.css */
 .pageWrapper {
   min-height: 100vh;
-  background-color: #f8fafc; /* Matches your general app background */
-  padding: 80px 20px; /* Space for the fixed Navbar */
+  padding: 80px 20px;
+  background-color: #f8fafc;
+
+  /* DOT GRID PATTERN */
+  background-image: radial-gradient(#e2e8f0 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+  background-attachment: fixed;
 }
 
 .container {
   max-width: 800px;
   margin: 0 auto;
+  position: relative;
+  z-index: 1;
 }
 
 .header {
