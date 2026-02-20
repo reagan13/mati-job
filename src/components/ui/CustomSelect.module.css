@@ -1,3 +1,4 @@
+/* CustomSelect.module.css */
 .selectWrapper {
   position: relative;
   width: 100%;
@@ -7,13 +8,14 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 16px; /* Matches .textInput exactly */
-  height: 48px; /* Standardized height for all inputs */
+  padding: 12px 16px;
+  height: 48px;
   cursor: pointer;
   background: transparent;
   transition: all 0.2s ease;
   border-radius: 8px;
 }
+
 .selectHeader:hover {
   background: #f8fafc;
 }
@@ -57,9 +59,26 @@
   border: 1px solid #e2e8f0;
   border-radius: 12px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
   z-index: 100;
   animation: fadeIn 0.2s ease-out;
+
+  /* SCROLLABLE LOGIC */
+  max-height: 260px; /* Limits height to show ~5-6 items at once */
+  overflow-y: auto; /* Enables vertical scrolling */
+}
+
+/* Custom Scrollbar for better UI */
+.optionsList::-webkit-scrollbar {
+  width: 6px;
+}
+
+.optionsList::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+.optionsList::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
 }
 
 @keyframes fadeIn {
@@ -84,4 +103,10 @@
 .optionItem:hover {
   background: #f1f5f9;
   color: #0070f3;
+}
+
+.selectedOption {
+  background: #eff6ff;
+  color: #3b82f6;
+  font-weight: 600;
 }

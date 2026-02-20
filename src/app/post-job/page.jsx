@@ -4,6 +4,7 @@ import styles from "./PostJobPage.module.css";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import Footer from "@/components/layout/Footer";
 
 export default async function PostJobPage() {
   const cookieStore = await cookies();
@@ -46,6 +47,7 @@ export default async function PostJobPage() {
           <PostJobForm userProfile={profile} />
         </div>
       </main>
+      <Footer />
     </>
   );
 }

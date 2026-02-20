@@ -11,7 +11,7 @@ export default function PostJobForm({ userProfile }) {
   const [formData, setFormData] = useState({
     title: "",
     company: userProfile?.company_name || "",
-    location: "",
+    location: "", // This will store the selected Barangay
     type: "",
     salary: "",
     description: "",
@@ -25,6 +25,36 @@ export default function PostJobForm({ userProfile }) {
     { label: "Internship", value: "Internship" },
   ];
 
+  // All 26 Barangays of Mati City
+  const matiBarangays = [
+    { label: "Badas", value: "Badas" },
+    { label: "Bobon", value: "Bobon" },
+    { label: "Buso", value: "Buso" },
+    { label: "Cabuaya", value: "Cabuaya" },
+    { label: "Central (Poblacion)", value: "Central" },
+    { label: "Culian", value: "Culian" },
+    { label: "Dahican", value: "Dahican" },
+    { label: "Danao", value: "Danao" },
+    { label: "Dawan", value: "Dawan" },
+    { label: "Don Enrique Lopez", value: "Don Enrique Lopez" },
+    { label: "Don Martin Marundan", value: "Don Martin Marundan" },
+    { label: "Don Salvador Lopez, Sr.", value: "Don Salvador Lopez, Sr." },
+    { label: "Langka", value: "Langka" },
+    { label: "Lawigan", value: "Lawigan" },
+    { label: "Libudon", value: "Libudon" },
+    { label: "Luban", value: "Luban" },
+    { label: "Macambol", value: "Macambol" },
+    { label: "Mamali", value: "Mamali" },
+    { label: "Matiao", value: "Matiao" },
+    { label: "Mayo", value: "Mayo" },
+    { label: "Sainz", value: "Sainz" },
+    { label: "Sanghay", value: "Sanghay" },
+    { label: "Tagabakid", value: "Tagabakid" },
+    { label: "Tagbinonga", value: "Tagbinonga" },
+    { label: "Taguibo", value: "Taguibo" },
+    { label: "Tamisan", value: "Tamisan" },
+  ];
+
   const supabase = createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
@@ -33,6 +63,7 @@ export default function PostJobForm({ userProfile }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.type) return alert("Please select an employment type");
+    if (!formData.location) return alert("Please select a location/barangay");
 
     setLoading(true);
     const { error } = await supabase.from("jobs").insert([
@@ -49,6 +80,7 @@ export default function PostJobForm({ userProfile }) {
       alert("Job successfully posted!");
       setFormData({
         title: "",
+        company: userProfile?.company_name || "",
         location: "",
         salary: "",
         description: "",
@@ -60,7 +92,6 @@ export default function PostJobForm({ userProfile }) {
 
   return (
     <form className={styles.formContainer} onSubmit={handleSubmit}>
-      {/* Job Title - Full Width */}
       <div className={styles.inputGroup}>
         <label className={styles.label}>
           <Briefcase size={16} /> Job Title
@@ -74,53 +105,52 @@ export default function PostJobForm({ userProfile }) {
         />
       </div>
 
-      {/* Employment Type - Full Width Custom Select */}
+      <div className={styles.gridInputs}>
+        {/* Employment Type Dropdown */}
+        <div className={styles.inputGroup}>
+          <label className={styles.label}>
+            <Clock size={16} /> Employment Type
+          </label>
+          <div className={styles.selectWrapperCustom}>
+            <CustomSelect
+              icon={Clock}
+              options={jobTypeOptions}
+              placeholder="Select type..."
+              value={formData.type}
+              onChange={(val) => setFormData({ ...formData, type: val })}
+            />
+          </div>
+        </div>
+
+        {/* Location / Barangay Dropdown */}
+        <div className={styles.inputGroup}>
+          <label className={styles.label}>
+            <MapPin size={16} /> Barangay (Mati City)
+          </label>
+          <div className={styles.selectWrapperCustom}>
+            <CustomSelect
+              icon={MapPin}
+              options={matiBarangays}
+              placeholder="Select Barangay..."
+              value={formData.location}
+              onChange={(val) => setFormData({ ...formData, location: val })}
+            />
+          </div>
+        </div>
+      </div>
+
       <div className={styles.inputGroup}>
         <label className={styles.label}>
-          <Clock size={16} /> Employment Type
+          <Banknote size={16} /> Salary Range
         </label>
-        <div className={styles.selectWrapperCustom}>
-          <CustomSelect
-            icon={Clock}
-            options={jobTypeOptions}
-            placeholder="Select job type..."
-            onChange={(val) => setFormData({ ...formData, type: val })}
-          />
-        </div>
+        <input
+          className={styles.textInput}
+          placeholder="e.g. ₱20,000 - ₱30,000"
+          value={formData.salary}
+          onChange={(e) => setFormData({ ...formData, salary: e.target.value })}
+        />
       </div>
 
-      {/* Grid for Location and Salary - Consistent Width */}
-      <div className={styles.gridInputs}>
-        <div className={styles.inputGroup}>
-          <label className={styles.label}>
-            <MapPin size={16} /> Location
-          </label>
-          <input
-            required
-            className={styles.textInput}
-            placeholder="City or Remote"
-            value={formData.location}
-            onChange={(e) =>
-              setFormData({ ...formData, location: e.target.value })
-            }
-          />
-        </div>
-        <div className={styles.inputGroup}>
-          <label className={styles.label}>
-            <Banknote size={16} /> Salary Range
-          </label>
-          <input
-            className={styles.textInput}
-            placeholder="e.g. ₱90k - ₱140k"
-            value={formData.salary}
-            onChange={(e) =>
-              setFormData({ ...formData, salary: e.target.value })
-            }
-          />
-        </div>
-      </div>
-
-      {/* Job Description - Full Width */}
       <div className={styles.inputGroup}>
         <label className={styles.label}>
           <FileText size={16} /> Job Description
@@ -128,7 +158,7 @@ export default function PostJobForm({ userProfile }) {
         <textarea
           className={styles.textArea}
           rows="5"
-          placeholder="Describe the responsibilities and requirements..."
+          placeholder="Describe the job roles..."
           value={formData.description}
           onChange={(e) =>
             setFormData({ ...formData, description: e.target.value })
