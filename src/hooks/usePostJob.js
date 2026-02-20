@@ -7,6 +7,8 @@ export function usePostJob(userProfile) {
   const [loading, setLoading] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
+
+  // FIX: Initialize contact and fb_link with empty strings
   const [formData, setFormData] = useState({
     title: "",
     company: userProfile?.company_name || "",
@@ -16,6 +18,8 @@ export function usePostJob(userProfile) {
     type: "",
     salary: "",
     description: "",
+    contact: "", // Initialized
+    fb_link: "", // Initialized
   });
 
   const supabase = createBrowserClient(
@@ -75,6 +79,8 @@ export function usePostJob(userProfile) {
         salary: "",
         description: "",
         type: "",
+        contact: "",
+        fb_link: "",
       });
       removeFile();
 

@@ -135,3 +135,54 @@
   font-weight: 600;
   cursor: pointer;
 }
+
+.jobPosterImage {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  object-fit: cover;
+  border: 1px solid #e2e8f0;
+}
+
+.logoPlaceholder {
+  width: 52px;
+  height: 52px;
+  background: #f8fafc;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  flex-shrink: 0;
+}
+
+/* Container for the big image */
+.postImageContainer {
+  width: calc(100% + 3rem); /* Expand to touch the edges of the padded card */
+  margin: 0 -1.5rem 1.2rem -1.5rem; /* Negative margin to offset card padding */
+  border-top: 1px solid #f1f5f9;
+  border-bottom: 1px solid #f1f5f9;
+  background: #f8fafc;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.fullWidthPostImage {
+  width: 100%;
+  max-height: 500px; /* Prevents extremely tall images from taking over the screen */
+  object-fit: contain; /* Shows the full poster without cropping */
+  display: block;
+}
+
+/* Ensure the card header and details still look good */
+.postDate {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.8rem;
+  color: #94a3b8;
+}
+
+/* Adjust card padding if necessary to make the image feel more integrated */
+.jobCard {
+  padding: 1.5rem;
+  overflow: hidden; /* Clips the big image to the card's border radius */
+}

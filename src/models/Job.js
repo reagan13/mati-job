@@ -5,6 +5,7 @@ export const JobModel = {
     if (!data.company) errors.company = "Company name is required";
     if (!data.location) errors.location = "Barangay is required";
     if (!data.type) errors.type = "Employment type is required";
+    if (!data.contact) errors.contact = "Contact number is required";
 
     return {
       isValid: Object.keys(errors).length === 0,
@@ -22,6 +23,10 @@ export const JobModel = {
       type: data.type,
       salary: data.salary,
       description: data.description,
+      // Map frontend 'contact' to DB 'contact_number'
+      contact_number: data.contact,
+      // Map frontend 'fb_link' to DB 'facebook_link'
+      facebook_link: data.fb_link || null,
       image_url: imageUrl,
       user_id: userId,
       posted: new Date().toISOString(),

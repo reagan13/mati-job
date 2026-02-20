@@ -10,8 +10,21 @@ export default function JobCard({ job }) {
           <h4 className={styles.jobTitleText}>{job.title}</h4>
           <p className={styles.companyNameText}>{job.company}</p>
         </div>
-        <span className={styles.postDate}>{job.posted}</span>
+        <span className={styles.postDate}>
+          {new Date(job.posted).toLocaleDateString()}
+        </span>
       </div>
+
+      {/* Large Attached Image Container */}
+      {job.image_url && (
+        <div className={styles.postImageContainer}>
+          <img
+            src={job.image_url}
+            alt="Hiring Visual"
+            className={styles.fullWidthPostImage}
+          />
+        </div>
+      )}
 
       <div className={styles.detailsGrid}>
         <div className={styles.detailItem}>
@@ -27,7 +40,7 @@ export default function JobCard({ job }) {
 
       <div className={styles.cardActions}>
         <button className={styles.applyBtn}>Apply Now</button>
-        <button className={styles.saveBtn}>Save Job</button>
+        <button className={styles.saveBtn}>Save</button>
       </div>
     </div>
   );
