@@ -55,7 +55,6 @@ export async function getUniqueLocations() {
     return [];
   }
 
-  // Filter out duplicates and nulls
   const unique = [...new Set(data.map((item) => item.location))].filter(
     Boolean,
   );

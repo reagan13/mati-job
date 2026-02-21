@@ -3,6 +3,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { UserProfileModel } from "@/models/users";
+import { redirect } from "next/navigation";
 
 async function getSupabaseClient() {
   const cookieStore = await cookies();

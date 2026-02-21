@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter, useSearchParams, usePathname } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation"; // Removed usePathname
 import { Search, MapPin, Banknote, Clock } from "lucide-react";
 import styles from "./SearchFilter.module.css";
 import CustomSelect from "../ui/CustomSelect";
@@ -9,9 +9,8 @@ import CustomSelect from "../ui/CustomSelect";
 const SearchFilter = ({ locations = [] }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const pathname = usePathname();
 
-  // Initialize state once from URL
+  // Initialize state from URL so the filter matches the results
   const [filters, setFilters] = useState({
     query: searchParams.get("query") || "",
     location: searchParams.get("location") || "",
@@ -22,14 +21,13 @@ const SearchFilter = ({ locations = [] }) => {
   const handleSearch = () => {
     const params = new URLSearchParams();
 
-    // Add parameters to URL only if they have a value
     if (filters.query) params.set("query", filters.query);
     if (filters.location) params.set("location", filters.location);
     if (filters.type) params.set("type", filters.type);
     if (filters.salary) params.set("salary", filters.salary);
 
-    // Update URL to trigger Server Component re-fetch
-    router.push(`${pathname}?${params.toString()}`, { scroll: false });
+    // FIXED: Redirect specifically to the /search page
+    router.push(`/search?${params.toString()}`);
   };
 
   const categoryOptions = [
