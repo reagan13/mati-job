@@ -25,15 +25,35 @@ export async function createJobAction(formData, imageUrl) {
   if (!user) throw new Error("Unauthorized");
 
   const finalData = JobModel.formatForStorage(formData, user.id, imageUrl);
-
   const { error } = await supabase.from("jobs").insert([finalData]);
 
-  if (error) {
-    console.error("Database Error:", error.message);
-    throw error;
-  }
+  if (error) throw error;
 
   revalidatePath("/");
-
   return { success: true };
+}
+
+export async function getJobById(id) {
+  const cookieStore = await cookies();
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    {
+      cookies: {
+        get(name) {
+          return cookieStore.get(name)?.value;
+        },
+      },
+    },
+  );
+
+  const { data, error } = await supabase
+    .from("jobs")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error) return null;
+
+  return data;
 }

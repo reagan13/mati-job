@@ -1,27 +1,23 @@
 "use client";
 
-import { useState } from "react";
+import Link from "next/link";
 import {
   MapPin,
   Clock,
   Banknote,
   Phone,
   Facebook,
-  ChevronDown,
-  ChevronUp,
+  ChevronRight,
 } from "lucide-react";
 import styles from "../layout/MainFeed.module.css";
 
 export default function JobCard({ job }) {
-  const [isExpanded, setIsExpanded] = useState(false);
-
   const characterLimit = 160;
   const description = job.description || "";
   const isLong = description.length > characterLimit;
-
-  const displayText = isExpanded
-    ? description
-    : description.slice(0, characterLimit);
+  const displayText = isLong
+    ? description.slice(0, characterLimit) + "..."
+    : description;
 
   return (
     <div className={styles.jobCard}>
@@ -37,66 +33,13 @@ export default function JobCard({ job }) {
       </div>
 
       <div className={styles.descriptionWrapper}>
-        <p className={styles.descriptionText}>
-          {displayText}
-          {!isExpanded && isLong && (
-            <span className={styles.ellipsis}>...</span>
-          )}
-        </p>
-
+        <p className={styles.descriptionText}>{displayText}</p>
         {isLong && (
-          <button
-            className={`${styles.proReadMoreBtn} ${isExpanded ? styles.expanded : ""}`}
-            onClick={() => setIsExpanded(!isExpanded)}
-          >
-            {isExpanded ? (
-              <>
-                Show Less <ChevronUp size={14} />
-              </>
-            ) : (
-              <>
-                Read Full Description <ChevronDown size={14} />
-              </>
-            )}
-          </button>
+          <Link href={`/job/${job.id}`} className={styles.proReadMoreBtn}>
+            Read Full Description <ChevronRight size={14} />
+          </Link>
         )}
       </div>
-
-      {(job.contact_number || job.facebook_link) && (
-        <div className={styles.contactContainer}>
-          <span className={styles.contactLabel}>Direct Contact</span>
-          <div className={styles.contactLinks}>
-            {job.contact_number && (
-              <a
-                href={`tel:${job.contact_number}`}
-                className={styles.contactBadge}
-              >
-                <Phone size={12} /> {job.contact_number}
-              </a>
-            )}
-            {job.facebook_link && (
-              <a
-                href={job.facebook_link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.contactBadge}
-              >
-                <Facebook size={12} /> Facebook
-              </a>
-            )}
-          </div>
-        </div>
-      )}
-
-      {job.image_url && (
-        <div className={styles.postImageContainer}>
-          <img
-            src={job.image_url}
-            alt="Hiring Visual"
-            className={styles.fullWidthPostImage}
-          />
-        </div>
-      )}
 
       <div className={styles.detailsGrid}>
         <div className={styles.detailItem}>
