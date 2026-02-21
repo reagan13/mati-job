@@ -33,7 +33,6 @@ export async function createJobAction(formData, imageUrl) {
     throw error;
   }
 
-  // Forces the MainFeed to refresh its data automatically
   revalidatePath("/");
 
   return { success: true };

@@ -1,22 +1,35 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation"; // Removed usePathname
-import { Search, MapPin, Banknote, Clock } from "lucide-react";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
+import { Search, MapPin, Clock, X } from "lucide-react"; // Removed Banknote icon
 import styles from "./SearchFilter.module.css";
 import CustomSelect from "../ui/CustomSelect";
 
 const SearchFilter = ({ locations = [] }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const pathname = usePathname();
 
-  // Initialize state from URL so the filter matches the results
+  // Initialize state from URL (Removed salary)
   const [filters, setFilters] = useState({
     query: searchParams.get("query") || "",
     location: searchParams.get("location") || "",
     type: searchParams.get("type") || "",
-    salary: searchParams.get("salary") || "",
   });
+
+  // Check if any filter is currently active
+  const hasActiveFilters = Object.values(filters).some((val) => val !== "");
+
+  // Function to clear all filters
+  const clearAllFilters = () => {
+    const cleared = { query: "", location: "", type: "" };
+    setFilters(cleared);
+    router.push(pathname);
+  };
+
+  // Logic for individual text clear
+  const clearQuery = () => setFilters({ ...filters, query: "" });
 
   const handleSearch = () => {
     const params = new URLSearchParams();
@@ -24,9 +37,8 @@ const SearchFilter = ({ locations = [] }) => {
     if (filters.query) params.set("query", filters.query);
     if (filters.location) params.set("location", filters.location);
     if (filters.type) params.set("type", filters.type);
-    if (filters.salary) params.set("salary", filters.salary);
 
-    // FIXED: Redirect specifically to the /search page
+    // Redirect specifically to the /search page
     router.push(`/search?${params.toString()}`);
   };
 
@@ -37,15 +49,10 @@ const SearchFilter = ({ locations = [] }) => {
     { label: "Commission", value: "Commission" },
   ];
 
-  const salaryOptions = [
-    { label: "₱10k - ₱20k", value: "10-20" },
-    { label: "₱20k - ₱40k", value: "20-40" },
-    { label: "₱40k+", value: "40plus" },
-  ];
-
   return (
     <section className={styles.wrapper}>
       <div className={styles.searchBar}>
+        {/* Keyword Search with "X" */}
         <div className={styles.inputGroup}>
           <Search size={20} className={styles.icon} />
           <input
@@ -55,8 +62,18 @@ const SearchFilter = ({ locations = [] }) => {
             value={filters.query}
             onChange={(e) => setFilters({ ...filters, query: e.target.value })}
           />
+          {filters.query && (
+            <X
+              size={18}
+              className={styles.clearInputIcon}
+              onClick={clearQuery}
+            />
+          )}
         </div>
+
         <div className={styles.divider} />
+
+        {/* Location Filter */}
         <div className={styles.filterGroup}>
           <CustomSelect
             icon={MapPin}
@@ -66,7 +83,10 @@ const SearchFilter = ({ locations = [] }) => {
             onChange={(val) => setFilters({ ...filters, location: val })}
           />
         </div>
+
         <div className={styles.divider} />
+
+        {/* Job Type Filter */}
         <div className={styles.filterGroup}>
           <CustomSelect
             icon={Clock}
@@ -76,19 +96,22 @@ const SearchFilter = ({ locations = [] }) => {
             onChange={(val) => setFilters({ ...filters, type: val })}
           />
         </div>
-        <div className={styles.divider} />
-        <div className={styles.filterGroup}>
-          <CustomSelect
-            icon={Banknote}
-            placeholder="Salary"
-            options={salaryOptions}
-            value={filters.salary}
-            onChange={(val) => setFilters({ ...filters, salary: val })}
-          />
+
+        {/* Action Buttons */}
+        <div className={styles.buttonGroup}>
+          {hasActiveFilters && (
+            <button
+              type="button"
+              className={styles.clearAllBtn}
+              onClick={clearAllFilters}
+            >
+              Clear
+            </button>
+          )}
+          <button className={styles.searchBtn} onClick={handleSearch}>
+            <span>Find Jobs</span>
+          </button>
         </div>
-        <button className={styles.searchBtn} onClick={handleSearch}>
-          <span>Find Jobs</span>
-        </button>
       </div>
     </section>
   );
