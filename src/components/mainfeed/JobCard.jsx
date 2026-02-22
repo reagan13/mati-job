@@ -9,8 +9,6 @@ export default function JobCard({ job }) {
   const [isSaved, setIsSaved] = useState(false);
 
   useEffect(() => {
-    // Defining this logic as a local constant inside the effect
-    // removes the cascading render warning redline
     const checkSavedStatus = () => {
       if (typeof window !== "undefined") {
         const savedJobs = JSON.parse(localStorage.getItem("savedJobs") || "[]");
@@ -18,22 +16,18 @@ export default function JobCard({ job }) {
         setIsSaved(alreadySaved);
       }
     };
-
     checkSavedStatus();
   }, [job.id]);
 
   const toggleSave = () => {
     if (typeof window === "undefined") return;
-
     const savedJobs = JSON.parse(localStorage.getItem("savedJobs") || "[]");
     let updatedJobs;
-
     if (isSaved) {
       updatedJobs = savedJobs.filter((j) => j.id !== job.id);
     } else {
       updatedJobs = [...savedJobs, job];
     }
-
     localStorage.setItem("savedJobs", JSON.stringify(updatedJobs));
     setIsSaved(!isSaved);
     window.dispatchEvent(new Event("storage"));
@@ -81,7 +75,9 @@ export default function JobCard({ job }) {
       </div>
 
       <div className={styles.cardActions}>
-        <button className={styles.applyBtn}>Apply Now</button>
+        <Link href={`/job/${job.id}/apply`} className={styles.applyBtn}>
+          Apply Now
+        </Link>
         <button
           className={`${styles.saveBtn} ${isSaved ? styles.saved : ""}`}
           onClick={toggleSave}

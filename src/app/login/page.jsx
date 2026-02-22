@@ -29,9 +29,7 @@ export default function Login() {
       setLoading(false);
     } else {
       setMessage({ type: "success", text: result.success });
-
       router.refresh();
-
       setTimeout(() => {
         router.push("/home");
       }, 1500);
@@ -47,10 +45,10 @@ export default function Login() {
             <h1>
               Welcome Back to MATI<span className={styles.logoDot}>JOB</span>
             </h1>
-            <p>Enter your credentials to access your account.</p>
+            <p>Please enter your details to sign in.</p>
           </div>
 
-          <form className={styles.form} onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit}>
             {message.text && (
               <p
                 className={
@@ -94,9 +92,9 @@ export default function Login() {
               </div>
             </div>
 
-            <div className={styles.forgotPassword}>
-              <Link href="/forgot-password">Forgot password?</Link>
-            </div>
+            <Link href="/forgot-password" className={styles.forgotPass}>
+              Forgot password?
+            </Link>
 
             <Button
               variant="primary"
@@ -110,7 +108,10 @@ export default function Login() {
 
           <div className={styles.footer}>
             <p>
-              Don&apos;t have an account? <Link href="/signup">Sign Up</Link>
+              Don&apos;t have an account?{" "}
+              <Link href="/signup" style={{ fontWeight: "700", color: "#000" }}>
+                Sign Up
+              </Link>
             </p>
           </div>
         </div>
