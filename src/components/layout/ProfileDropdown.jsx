@@ -6,6 +6,7 @@ import {
   Settings,
   LayoutDashboard,
   User,
+  Heart,
 } from "lucide-react";
 import { useDropdown } from "@/hooks/useDropdown";
 import { signOutUser } from "@/app/actions/auth";
@@ -42,6 +43,10 @@ const ProfileDropdown = ({ user, profile }) => {
             <LayoutDashboard size={18} />
             <span>Dashboard</span>
           </Link>
+          <Link href="/saved" className={styles.dropdownItem} onClick={close}>
+            <Heart size={18} />
+            <span>Saved Jobs</span>
+          </Link>
           <Link href="/profile" className={styles.dropdownItem} onClick={close}>
             <User size={18} />
             <span>My Profile</span>
@@ -57,7 +62,6 @@ const ProfileDropdown = ({ user, profile }) => {
 
           <div className={styles.divider} />
 
-          {/* Sign Out Form integrated into the list */}
           <form action={signOutUser} style={{ width: "100%" }}>
             <button
               type="submit"

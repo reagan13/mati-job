@@ -1,21 +1,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import {
-  ArrowLeft,
-  MapPin,
-  Clock,
-  Banknote,
-  Phone,
-  Briefcase,
-  ShieldCheck,
-  Share2,
-  Facebook,
-} from "lucide-react";
+import { ArrowLeft, Clock } from "lucide-react";
 import { getJobById } from "../../post-job/jobActions";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import styles from "./JobPage.module.css";
-import Button from "@/components/ui/Button";
+import JobSummaryCard from "@/components/ui/JobSummaryCard";
 
 export default async function JobDetailPage({ params }) {
   const { id } = await params;
@@ -62,73 +52,7 @@ export default async function JobDetailPage({ params }) {
             </section>
           </div>
 
-          <aside className={styles.sidebar}>
-            <div className={styles.stickyWidget}>
-              <h3 className={styles.widgetTitle}>Job Summary</h3>
-
-              <div className={styles.infoList}>
-                <div className={styles.infoItem}>
-                  <MapPin size={22} />
-                  <div>
-                    <label>Location</label>
-                    <p>{job.location}</p>
-                  </div>
-                </div>
-                <div className={styles.infoItem}>
-                  <Briefcase size={22} />
-                  <div>
-                    <label>Job Type</label>
-                    <p>{job.type}</p>
-                  </div>
-                </div>
-                <div className={styles.infoItem}>
-                  <Banknote size={22} />
-                  <div>
-                    <label>Salary Range</label>
-                    <p>{job.salary || "Not Specified"}</p>
-                  </div>
-                </div>
-                {job.contact_number && (
-                  <div className={styles.infoItem}>
-                    <Phone size={22} />
-                    <div>
-                      <label>Phone</label>
-                      <p>{job.contact_number}</p>
-                    </div>
-                  </div>
-                )}
-                {job.facebook_url && (
-                  <div className={styles.infoItem}>
-                    <Facebook size={22} />
-                    <div>
-                      <label>Facebook</label>
-                      <a
-                        href={job.facebook_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        Visit Profile
-                      </a>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              <div className={styles.actionStack}>
-                <Button>Apply for this position</Button>
-                {job.facebook_url && (
-                  <a
-                    href={job.facebook_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={styles.fbBtn}
-                  >
-                    <Facebook size={18} /> Contact on Facebook
-                  </a>
-                )}
-              </div>
-            </div>
-          </aside>
+          <JobSummaryCard job={job} />
         </div>
       </main>
       <Footer />

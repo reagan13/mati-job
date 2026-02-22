@@ -30,15 +30,16 @@
   right: 0;
   width: 220px;
   background: white;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  padding: 0.5rem;
+  border: 1px solid #eef2f6; /* Lighter border for pro look */
+  border-radius: 8px; /* Matching your 8px requirement */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  padding: 6px; /* Increased consistent padding for the container */
   margin-top: 10px;
 }
 
 .userInfo {
-  padding: 8px 12px;
+  padding: 10px 12px;
+  margin-bottom: 4px;
 }
 
 .userName {
@@ -59,27 +60,29 @@
   margin: 8px 0;
 }
 
-/* Shared class for all items in the list */
 .dropdownItem {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 8px 12px;
+  padding: 10px 12px; /* Slightly taller for better touch/click targets */
   color: #475569;
   text-decoration: none;
   font-size: 0.85rem;
-  border-radius: 6px;
-  width: 100%; 
+  font-weight: 500;
+  border-radius: 6px; /* Slightly smaller than container for nested look */
+  width: 100%;
   border: none;
-  background: none;
+  background: transparent;
   cursor: pointer;
-  font-family: inherit; 
+  font-family: inherit;
   text-align: left;
   transition: all 0.2s ease;
+  box-sizing: border-box; /* Ensures padding doesn't push width out */
 }
 
 .dropdownItem:hover {
-  background: #f1f5f9;
+  background: #f0f7ff; /* Professional light blue */
+  color: #0070f3; /* Primary blue for the text/icon on hover */
 }
 
 .logoutBtn {
@@ -87,7 +90,7 @@
 }
 
 .logoutBtn:hover {
-  background: #fef2f2; 
+  background: #fef2f2;
   color: #dc2626;
 }
 

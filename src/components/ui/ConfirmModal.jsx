@@ -9,13 +9,13 @@ export default function ConfirmModal({
   title,
   message,
   loading,
+  confirmText = "Confirm", // Added default prop
 }) {
   if (!isOpen) return null;
 
   return (
     <div className={styles.overlay}>
       <div className={styles.modalContent}>
-        {/* Updated Close Button Container */}
         <button
           className={styles.closeButtonWrapper}
           onClick={onClose}
@@ -45,7 +45,7 @@ export default function ConfirmModal({
             onClick={onConfirm}
             disabled={loading}
           >
-            {loading ? "Posting..." : "Confirm & Post"}
+            {loading ? "Processing..." : confirmText}
           </button>
         </div>
       </div>

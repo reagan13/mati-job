@@ -462,3 +462,28 @@
     border-radius: 0;
   }
 }
+
+.saveBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.8rem 1.2rem;
+  border-radius: 8px;
+  border: 1.5px solid #e2e8f0;
+  background: white;
+  color: #64748b;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.saveBtn:hover {
+  border-color: #cbd5e1;
+  background: #f8fafc;
+}
+
+.saveBtn.saved {
+  background-color: #fff1f2;
+  color: #e11d48;
+  border-color: #fda4af;
+}

@@ -1,17 +1,44 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import {
-  MapPin,
-  Clock,
-  Banknote,
-  Phone,
-  Facebook,
-  ChevronRight,
-} from "lucide-react";
+import { MapPin, Clock, Banknote, ChevronRight, Heart } from "lucide-react";
 import styles from "../layout/MainFeed.module.css";
 
 export default function JobCard({ job }) {
+  const [isSaved, setIsSaved] = useState(false);
+
+  useEffect(() => {
+    // Defining this logic as a local constant inside the effect
+    // removes the cascading render warning redline
+    const checkSavedStatus = () => {
+      if (typeof window !== "undefined") {
+        const savedJobs = JSON.parse(localStorage.getItem("savedJobs") || "[]");
+        const alreadySaved = savedJobs.some((j) => j.id === job.id);
+        setIsSaved(alreadySaved);
+      }
+    };
+
+    checkSavedStatus();
+  }, [job.id]);
+
+  const toggleSave = () => {
+    if (typeof window === "undefined") return;
+
+    const savedJobs = JSON.parse(localStorage.getItem("savedJobs") || "[]");
+    let updatedJobs;
+
+    if (isSaved) {
+      updatedJobs = savedJobs.filter((j) => j.id !== job.id);
+    } else {
+      updatedJobs = [...savedJobs, job];
+    }
+
+    localStorage.setItem("savedJobs", JSON.stringify(updatedJobs));
+    setIsSaved(!isSaved);
+    window.dispatchEvent(new Event("storage"));
+  };
+
   const characterLimit = 160;
   const description = job.description || "";
   const isLong = description.length > characterLimit;
@@ -55,7 +82,13 @@ export default function JobCard({ job }) {
 
       <div className={styles.cardActions}>
         <button className={styles.applyBtn}>Apply Now</button>
-        <button className={styles.saveBtn}>Save</button>
+        <button
+          className={`${styles.saveBtn} ${isSaved ? styles.saved : ""}`}
+          onClick={toggleSave}
+        >
+          <Heart size={16} fill={isSaved ? "currentColor" : "none"} />
+          {isSaved ? "Saved" : "Save"}
+        </button>
       </div>
     </div>
   );
